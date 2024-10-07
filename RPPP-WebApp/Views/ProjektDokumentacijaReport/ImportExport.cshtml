@@ -1,0 +1,75 @@
+﻿@{
+    ViewData["Title"] = "ImportExport";
+}
+
+<div style="display:flex; flex-direction:column; align-items:center">
+    <h2 style="align-self:center">Uvoz i izvoz podataka</h2>
+    <div style="margin-bottom: 50px; width: 450px; border: 1px solid #ccc; padding: 10px; align-self:center">
+        <div style="margin-bottom: 15px;">
+            <p style="font-weight: bold; font-size: 16px; margin-bottom:5px">Excel - Projekti sa povezanim entitetima</p>
+            <a asp-controller="ProjektDokumentacijaReport" asp-action="MasterDetailExport" class="btn btn-primary btn-sm" style="margin-top: 3px;">Preuzmi</a>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <p style="font-weight: bold; font-size: 16px; margin-bottom:5px">Excel - Popis Projekata</p>
+            <a asp-controller="ProjektDokumentacijaReport" asp-action="ProjektiExport" class="btn btn-primary btn-sm" style="margin-top: 3px;">Preuzmi</a>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <p style="font-weight: bold; font-size: 16px; margin-bottom:5px">Excel - Popis Dokumenata</p>
+            <a asp-controller="ProjektDokumentacijaReport" asp-action="DokumentacijaExport" class="btn btn-primary btn-sm" style="margin-top: 3px;">Preuzmi</a>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <p style="font-weight: bold; font-size: 16px; margin-bottom:5px">PDF - Popis Projekata</p>
+            <a asp-controller="ProjektDokumentacijaReport" asp-action="ProjektiPdfExport" class="btn btn-primary btn-sm" style="margin-top: 3px;">Preuzmi</a>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <p style="font-weight: bold; font-size: 16px; margin-bottom:5px">PDF - Popis Dokumenata</p>
+            <a asp-controller="ProjektDokumentacijaReport" asp-action="DokumentacijaPdfExport" class="btn btn-primary btn-sm" style="margin-top: 3px;">Preuzmi</a>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <p style="font-weight: bold; font-size: 16px; margin-bottom:5px">Excel - Projekti Template</p>
+            <a asp-controller="ProjektDokumentacijaReport" asp-action="ProjektiTemplate" class="btn btn-primary btn-sm" style="margin-top: 3px;">Preuzmi</a>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <p style="font-weight: bold; font-size: 16px; margin-bottom:5px">Excel - Dokumentacija Template</p>
+            <a asp-controller="ProjektDokumentacijaReport" asp-action="DokumentacijaTemplate" class="btn btn-primary btn-sm" style="margin-top: 3px;">Preuzmi</a>
+        </div>
+    </div>
+
+    <div style="margin-bottom: 50px; width: 450px; border: 1px solid #ccc; padding: 10px; align-self:center">
+        <h3>Uvezi Projekte</h3>
+
+        <form method="post" enctype="multipart/form-data" asp-action="ImportProjekt">
+            <div class="form-group">
+                <label for="excelFile" style="font-weight: bold; display: block;">Odaberite Excel datoteku:</label>
+                <input type="file" class="form-control-file" id="excelFile" name="excelFile" accept=".xlsx" style="margin-bottom: 10px;">
+            </div>
+            <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Uvezi podatke</button>
+        </form>
+
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert alert-success mt-3" role="alert">
+                @ViewBag.Message
+            </div>
+        }
+    </div>
+
+    <div style="margin-bottom: 50px; width: 450px; border: 1px solid #ccc; padding: 10px; align-self:center">
+        <h3>Uvezi Dokumentaciju</h3>
+
+        <form method="post" enctype="multipart/form-data" asp-action="ImportDokumentacija">
+            <div class="form-group">
+                <label for="excelFile" style="font-weight: bold; display: block;">Odaberite Excel datoteku:</label>
+                <input type="file" class="form-control-file" id="excelFile" name="excelFile" accept=".xlsx" style="margin-bottom: 10px;">
+            </div>
+            <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Uvezi podatke</button>
+        </form>
+
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert alert-success mt-3" role="alert">
+                @ViewBag.Message
+            </div>
+        }
+    </div>
+</div>

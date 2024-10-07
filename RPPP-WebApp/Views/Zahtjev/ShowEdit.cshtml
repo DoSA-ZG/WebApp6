@@ -1,0 +1,226 @@
+@model ZahtjevZadatakViewModel
+@{
+    ViewBag.Title = "ShowEdit";
+}
+
+<div>
+    <br />
+    <div class="row text-center">
+        <div class="col-sm-2">
+            @if (ViewBag.Previous != null)
+            {
+                <a class="btn btn-sm btn-primary" asp-action="ShowEdit" asp-route-page="@ViewBag.Page"
+                    asp-route-sort="@ViewBag.Sort" asp-route-ascending="@ViewBag.Ascending"
+                    asp-route-position="@(ViewBag.Position - 1)" asp-route-ZahtjeId="@ViewBag.Previous">
+                    <i class="fas fa-step-backward"></i>
+                </a>
+            }
+        </div>
+        <div class="col-sm-8">
+            <h4>
+                @Model.Zahtjev.Ime
+            </h4>
+        </div>
+        <div class="col-sm-2">
+            @if (ViewBag.Next != null)
+            {
+                <a class="btn btn-sm btn-primary" asp-action="ShowEdit" asp-route-page="@ViewBag.Page"
+                    asp-route-sort="@ViewBag.Sort" asp-route-ascending="@ViewBag.Ascending"
+                    asp-route-position="@(ViewBag.Position + 1)" asp-route-ZahtjeId="@ViewBag.Next">
+                    <i class="fas fa-step-forward"></i>
+                </a>
+            }
+        </div>
+    </div>
+    <hr>
+    <form asp-action="ShowEdit" asp-route-ZahtjevId="@Model.Zahtjev.ZahtjevId"
+        asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-sort="@Model.PagingInfo.Sort"
+        asp-route-ascending="@Model.PagingInfo.Ascending">
+        <div class="form-group row justify-content-center">
+            <label asp-for="@Model.Zahtjev.ZahtjevId" class="col-sm-1 col-form-label"></label>
+            <div class="col-sm-3">
+                <input disabled asp-for="@Model.Zahtjev.ZahtjevId" class="form-control" />
+            </div>
+            <label asp-for="@Model.Zahtjev.Opis" class="col-sm-1 col-form-label"></label>
+            <div class="col-sm-3">
+                <input asp-for="@Model.Zahtjev.Opis" class="form-control" />
+                <span asp-validation-for="@Model.Zahtjev.Opis" class="text-danger"></span>
+            </div>
+            <label asp-for="@Model.Zahtjev.Ime" class="col-sm-1 col-form-label"></label>
+            <div class="col-sm-3">
+                <input asp-for="@Model.Zahtjev.Ime" class="form-control" />
+                <span asp-validation-for="@Model.Zahtjev.Ime" class="text-danger"></span>
+            </div>
+        </div>
+
+        <br />
+        <br />
+        <div class="form-group row justify-content-center">
+            <div class="row">
+                <input type="hidden" asp-for="@Model.Zahtjev.PlanProjektaId" class="form-control"
+                    data-autocomplete-placeholder="planProjekta" />
+
+                <label asp-for="@Model.Zahtjev.PlanProjekta.Projekt.Ime" class="col-sm-1 col-form-label">Ime
+                    projekta</label>
+                <div class="col-sm-3">
+                    <input class="form-control" data-autocomplete="planProjekta"
+                        asp-for="@Model.Zahtjev.PlanProjekta.Projekt.Ime" />
+                </div>
+
+                <input type="hidden" asp-for="@Model.Zahtjev.PrioritetId" class="form-control"
+                    data-autocomplete-placeholder="prioritet" />
+
+                <label asp-for="@Model.Zahtjev.Prioritet.Ime" class="col-sm-1 col-form-label">Prioritet</label>
+                <div class="col-sm-3">
+                    <input class="form-control" data-autocomplete="prioritet" asp-for="@Model.Zahtjev.Prioritet.Ime" />
+                </div>
+
+
+                <input type="hidden" asp-for="@Model.Zahtjev.TipZahtjevaId" class="form-control"
+                    data-autocomplete-placeholder="tipZahtjeva" />
+
+                <label asp-for="@Model.Zahtjev.TipZahtjeva.Ime" class="col-sm-1 col-form-label">Tip zahtjeva</label>
+                <div class="col-sm-3">
+                    <input class="form-control" data-autocomplete="tipZahtjeva"
+                        asp-for="@Model.Zahtjev.TipZahtjeva.Ime" />
+                </div>
+            </div>
+        </div>
+        <div class="d-flex  justify-content-center">
+            <button type="submit" style="margin-right: 15px;" class="btn btn-success" title="Spremi">Spremi</button>
+            <a style="margin-right: 15px;" asp-controller="Zahtjev" asp-action="ShowEdit"
+                asp-route-ZahtjevId="@Model.Zahtjev.ZahtjevId" asp-route-page="@Model.PagingInfo.CurrentPage"
+                asp-route-sort="@Model.PagingInfo.Sort" asp-route-ascending="@Model.PagingInfo.Ascending"
+                class="btn btn-warning">Resetiraj</a>
+            <a asp-controller="Zahtjev" asp-action="Master" asp-route-ViewType="Show"
+                asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-sort="@Model.PagingInfo.Sort"
+                asp-route-ascending="@Model.PagingInfo.Ascending" class="btn btn-danger">Povratak</a>
+
+        </div>
+    </form>
+    <br />
+
+    <hr>
+
+    <div class="row">
+        <table style="transform: translateX(-130px)" class="table table-striped">
+            <thead>
+                <tr>
+                    @{
+                        string[] nazivi = { "Id zadatka", "Opis", "Status", "Nositelj Email", "Planirani Početak",
+                    "Planirani Kraj", "Stvarni Početak",
+                    "Stvarni Kraj"};
+                        for (int i = 0; i < nazivi.Length; i++)
+                        {
+                            <th class="text-center">
+                                @nazivi[i]
+                            </th>
+                        }
+                    }
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var zadatak in Model.Zahtjev.Zadatak)
+                {
+
+                    <tr>
+                        <form asp-action="EditZadatak" method="post" class="mx-2" asp-route-ZadatakId="@zadatak.ZadatakId"
+                            asp-route-ZahtjevId="@Model.Zahtjev.ZahtjevId" asp-route-page="@Model.PagingInfo.CurrentPage"
+                            asp-route-sort="@Model.PagingInfo.Sort" asp-route-ascending="@Model.PagingInfo.Ascending">
+                            <td>
+                                <input style="width: 45px; text-align: center;" disabled value="@zadatak.ZadatakId"
+                                    asp-for="@Model.Zadatak.ZadatakId">
+                                <input type="hidden" value="@Model.Zahtjev.ZahtjevId" asp-for="@Model.Zadatak.ZahtjevId">
+                            </td>
+                            <td><input style="width: 120px;" value="@zadatak.OpisZadatka"
+                                    asp-for="@Model.Zadatak.OpisZadatka" class="form-control" /></td>
+                            <td>
+                                <input type="hidden" value="@zadatak.Status.StatusId" asp-for="@Model.Zadatak.StatusId"
+                                    class="form-control" data-autocomplete-placeholder="status" />
+                                <input style="width: 115px;" value="@zadatak.Status.Ime" class="form-control"
+                                    data-autocomplete="status" asp-for="@Model.Zadatak.Status.Ime" />
+                            </td>
+                            <td><input style="width: 200px;" value="@zadatak.NositeljEmail" class="form-control"
+                                    data-autocomplete="nadredeniSuradnikEmail" asp-for="@Model.Zadatak.NositeljEmail" />
+                            </td>
+                            <td><input style="width: 210px;" value="@zadatak.PlaniraniPočetak.ToString("yyyy-MM-ddTHH:mm")"
+                                    asp-for="@Model.Zadatak.PlaniraniPočetak" class="form-control" type="datetime-local" />
+                            </td>
+                            <td><input style="width: 210px;" value="@zadatak.PlaniraniKraj.ToString("yyyy-MM-ddTHH:mm")"
+                                    asp-for="@Model.Zadatak.PlaniraniKraj" class="form-control" type="datetime-local" />
+                            </td>
+                            <td><input style="width: 210px;" value="@zadatak.StvarniPočetak?.ToString("yyyy-MM-ddTHH:mm")"
+                                    asp-for="@Model.Zadatak.StvarniPočetak" class="form-control" type="datetime-local" />
+                            </td>
+                            <td><input style="width: 210px;" value="@zadatak.StvarniKraj?.ToString("yyyy-MM-ddTHH:mm")"
+                                    asp-for="@Model.Zadatak.StvarniKraj" class="form-control" type="datetime-local" />
+                            </td>
+                            <td>
+                                <div style="display: flex; justify-content: center">
+
+                                    <button style="margin-right: 15px;" type="submit" class="btn btn-warning"
+                                        title="Spremi">Spremi</button>
+
+                                    <form asp-controller="Zadatak" asp-action="Delete" asp-route-ZadatakId="@zadatak.ZadatakId"
+                                        asp-route-ZahtjevId="@Model.Zahtjev.ZahtjevId" asp-route-ViewType="ShowEdit"
+                                        asp-route-page="@Model.PagingInfo.CurrentPage"
+                                        asp-route-sort="@Model.PagingInfo.Sort"
+                                        asp-route-ascending="@Model.PagingInfo.Ascending">
+                                        <button type="submit" class="btn btn-danger delete" title="Obriši">Obriši</button>
+                                    </form>
+
+                                </div>
+                            </td>
+                        </form>
+                    </tr>
+
+
+                }
+
+                <form asp-action="CreateZadatak" method="post" asp-route-ZahtjevId="@Model.Zahtjev.ZahtjevId"
+                    asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-sort="@Model.PagingInfo.Sort"
+                    asp-route-ascending="@Model.PagingInfo.Ascending">
+                    <tr>
+                        <td><input type="hidden" asp-for="@Model.Zadatak.ZahtjevId" value="@Model.Zahtjev.ZahtjevId">
+                        </td>
+                        <td><input style="width: 120px;" asp-for="@Model.Zadatak.OpisZadatka" class="form-control" />
+                        </td>
+                        <td>
+                            <input type="hidden" asp-for="@Model.Zadatak.StatusId" class="form-control"
+                                data-autocomplete-placeholder="status" />
+                            <input style="width: 115px;" class="form-control" data-autocomplete="status"
+                                asp-for="@Model.Zadatak.Status.Ime" />
+                        </td>
+                        <td>
+                            <input style="width: 200px;" class="form-control" data-autocomplete="nadredeniSuradnikEmail"
+                                asp-for="@Model.Zadatak.NositeljEmail" />
+                        </td>
+                        <td><input style="width: 210px;" asp-for="@Model.Zadatak.PlaniraniPočetak" class="form-control"
+                                type="datetime-local" /></td>
+                        <td><input style="width: 210px;" asp-for="@Model.Zadatak.PlaniraniKraj" class="form-control"
+                                type="datetime-local" />
+                        </td>
+                        <td><input style="width: 210px;" asp-for="@Model.Zadatak.StvarniPočetak" class="form-control"
+                                type="datetime-local" />
+                        </td>
+                        <td><input style="width: 210px;" asp-for="@Model.Zadatak.StvarniKraj" class="form-control"
+                                type="datetime-local" />
+                        </td>
+                        <td>
+                            <div style="display: flex; justify-content: center;"><button type="submit"
+                                    class="btn btn-success" title="Dodaj">Dodaj</button></div>
+                        </td>
+                    </tr>
+                </form>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+@section scripts {
+    <!--<partial name="IncludeValidation" /> -->
+    <script src="~/lib/jqueryui/jquery-ui.js"></script>
+    <script src="~/js/autocomplete.js" asp-append-version="true"></script>
+}

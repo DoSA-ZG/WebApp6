@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ProjektnaKartica>
+
+@{
+    ViewData["Title"] = "Master";
+}
+
+<h1>Projektne Kartice</h1>
+
+<table class="table table-striped" style="width:100%">
+    <thead class="bg-dark text-white">
+        <tr>
+            <th>Projektna kartica ID</th>
+            <th>Banka</th>
+            <th>IBAN</th>
+            <th>Stanje</th>
+            <th>Projekt</th>
+            <th>Ulazne Transakcije ID</th>
+            <th>Izlazne Transakcije ID</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var kartica in Model)
+        {
+            <tr>
+                <td>@kartica.ProjektnaKarticaId</td>
+                <td>@kartica.Banka</td>
+                <td>@kartica.Iban</td>
+                <td>@kartica.Stanje</td>
+                <td>@kartica.ProjektId</td>
+                <td>
+                    @foreach (var transakcija in kartica.TransakcijaProjektnaKarticaPrimatelj)
+                    {
+                        <span>@transakcija.TransakcijaId</span>
+                        if (transakcija != kartica.TransakcijaProjektnaKarticaPrimatelj.Last())
+                        {
+                            <span>,</span>
+                        }
+                    }
+                </td>
+                <td>
+                    @foreach (var transakcija in kartica.TransakcijaProjektnaKarticaIsporučitelj)
+                    {
+                        <span>@transakcija.TransakcijaId</span>
+                        if (transakcija != kartica.TransakcijaProjektnaKarticaIsporučitelj.Last())
+                        {
+                            <span>,</span>
+                        }
+                    }
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@kartica.ProjektnaKarticaId" class="btn btn-info mr-2">Detalji</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

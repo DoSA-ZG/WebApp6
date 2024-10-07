@@ -1,0 +1,171 @@
+﻿@model List<Projekt>
+@{
+    ViewData["Title"] = "STP";
+}
+
+<style>
+    .container.body-container {
+        max-width: 75vw;
+    }
+</style>
+
+<h2 style="margin-top:15px">Projekti</h2>
+
+@if (Model.Count == 0)
+{
+    <p>Nema Projekata za prikaz...</p>
+}
+else
+{
+
+    <div class="float-end">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                @for (int i = 1; i <= ViewBag.TotalPageCount; i++)
+                {
+                    <li class="page-item @(i == ViewBag.Page ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("STP", new { page = i, sort = ViewBag.Sort, ascending = ViewBag.ascending })">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+
+        <table class="table  table-striped w-100">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th>
+                        <a asp-route-sort="1" asp-route-page="@ViewBag.Page" asp-route-ascending="@(ViewBag.Sort == 1 ? !ViewBag.Ascending : true)">
+                            Projekt Id
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-route-sort="2" asp-route-page="@ViewBag.Page" asp-route-ascending="@(ViewBag.Sort == 2 ? !ViewBag.Ascending : true)">
+                            Ime projekta
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-route-sort="3" asp-route-page="@ViewBag.Page" asp-route-ascending="@(ViewBag.Sort == 3 ? !ViewBag.Ascending : true)">
+                            Kratica projekta
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-route-sort="4" asp-route-page="@ViewBag.Page" asp-route-ascending="@(ViewBag.Sort == 4 ? !ViewBag.Ascending : true)">
+                            Opis projekta
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-route-sort="5" asp-route-page="@ViewBag.Page" asp-route-ascending="@(ViewBag.Sort == 5 ? !ViewBag.Ascending : true)">
+                            Planirani početak
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-route-sort="6" asp-route-page="@ViewBag.Page" asp-route-ascending="@(ViewBag.Sort == 6 ? !ViewBag.Ascending : true)">
+                            Planirani kraj
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-route-sort="7" asp-route-page="@ViewBag.Page" asp-route-ascending="@(ViewBag.Sort == 7 ? !ViewBag.Ascending : true)">
+                            Stvarni početak
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-route-sort="8" asp-route-page="@ViewBag.Page" asp-route-ascending="@(ViewBag.Sort == 8 ? !ViewBag.Ascending : true)">
+                            Stvarni kraj
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-route-sort="9" asp-route-page="@ViewBag.Page" asp-route-ascending="@(ViewBag.Sort == 9 ? !ViewBag.Ascending : true)">
+                            Vrsta Projekta
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-route-sort="10" asp-route-page="@ViewBag.Page" asp-route-ascending="@(ViewBag.Sort == 10 ? !ViewBag.Ascending : true)">
+                            Povezane projektne kartice
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-route-sort="11" asp-route-page="@ViewBag.Page" asp-route-ascending="@(ViewBag.Sort == 11 ? !ViewBag.Ascending : true)">
+                            Povezani dokumenti
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-route-sort="12" asp-route-page="@ViewBag.Page" asp-route-ascending="@(ViewBag.Sort == 12 ? !ViewBag.Ascending : true)">
+                            Plan projekta
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-route-sort="13" asp-route-page="@ViewBag.Page" asp-route-ascending="@(ViewBag.Sort == 31 ? !ViewBag.Ascending : true)">
+                            Povezani suradnici
+                        </a>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var projekt in Model)
+                {
+                    <tr>
+                        <td>@projekt.ProjektId</td>
+                        <td>@projekt.Ime</td>
+                        <td>@projekt.Kratica</td>
+                        <td>@projekt.Opis</td>
+                        <td>@projekt.PlaniraniPočetak.ToString("dd-MM-yyyy")</td>
+                        <td>@projekt.PlaniraniKraj.ToString("dd-MM-yyyy")</td>
+                        <td>
+                            @if (projekt.StvarniPočetak is not null)
+                            {
+                                @projekt.StvarniPočetak.Value.ToString("dd-MM-yyyy")
+                            }
+                            else
+                            {
+                                <a>/</a>
+                            }
+                        </td>
+                        <td>
+                            @if (projekt.StvarniKraj is not null)
+                            {
+                                @projekt.StvarniKraj.Value.ToString("dd-MM-yyyy")
+                            }
+                            else
+                            {
+                                <a>/</a>
+                            }
+                        </td>
+                        <td>@projekt.VrstaProjekta.Ime</td>
+                        <td>
+                            @foreach (var projektneKartice in projekt.ProjektnaKartica)
+                            {
+                                <div>@projektneKartice.Iban</div>
+                            }
+                        </td>
+                        <td>
+                            @foreach (var dokumentacija in projekt.Dokumentacija)
+                            {
+                                <div>@dokumentacija.NazivDokumentacije</div>
+                            }
+                        </td>
+                        <td>
+                            @if (projekt.PlanProjekta is not null)
+                            {
+                                <div>@projekt.PlanProjekta.PlanProjektaId</div>
+                            }
+                        </td>
+                        <td>
+
+                            @foreach (var suradnici in projekt.SuradnikEmail)
+                            {
+                                <div>@suradnici.Email</div>
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@projekt.ProjektId">
+                                <button type="submit" class="btn btn-success">Details</button>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+}

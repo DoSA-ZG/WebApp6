@@ -1,0 +1,35 @@
+﻿﻿<table id="template" style="visibility:hidden">
+    <tr>
+        <td class="text-left ">
+            <input type="hidden" name="Posao.Index" value="--sifra--" />
+            <input type="hidden" name="Posao[--sifra--].PosaoId" value="--sifra--" />
+            <input name="Posao[--sifra--].SuradnikEmail" type="hidden" value="marko@gmail.com" />
+            <input name="Posao[--sifra--].Opis" class="form-control" value="--opis--" />
+        </td>
+        <td class="text-center">
+            <input name="Posao[--sifra--].VrijemePočetkaRada" class="form-control" type="datetime-local" value="--vrijemepocetak--" />
+        </td>
+        <td class="text-center">
+            <input name="Posao[--sifra--].VrijemeKrajaRada" class="form-control" type="datetime-local" value="--vrijemekraja--" />
+        </td>
+
+        <td class="text-right ">
+            <input type="hidden" name="Posao[--sifra--].VrstaPoslaId"  value="--vrstaid--" />
+            <input readonly="readonly"  name="Posao[--sifra--].VrstaPoslaIme"
+                   class="form-control" value="--vrstaime--" />
+
+
+
+        </td>
+        <td class="text-right ">
+            <input type="hidden" name="Posao[--sifra--].ZadatakId" value="--zadatakid--" />
+            <input id="posaoimenovo" readonly="readonly"  name="Posao[--sifra--].ZadatakIme"
+                   class="form-control" value="--zadatakime--" />
+
+        </td>
+        <td>
+            <button class="btn btn-sm btn-danger deleterow" title="Izbaci"><i class="fa fa-minus"></i></button>
+        </td>
+        
+    </tr>
+</table>

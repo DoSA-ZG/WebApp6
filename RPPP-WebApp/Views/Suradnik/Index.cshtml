@@ -1,0 +1,114 @@
+﻿@model SuradnikPageView
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Suradnici</h1>
+
+<div style="margin-bottom: 20px;">
+    <a class="btn btn-primary"  asp-action="Create">Dodaj Suradnika</a>
+</div>
+
+
+<div class="float-end">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            @for (int i = 1; i <= Model.PagingInfo.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.PagingInfo.CurrentPage ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { page = i, sort = Model.PagingInfo.Sort, ascending = Model.PagingInfo.Ascending })">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
+
+<table class="table  table-striped w-100">
+    <thead class="bg-dark text-white">
+        <tr>
+            <th>
+                <a asp-route-sort="1" asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-ascending="@(Model.PagingInfo.Sort == 1 ? !Model.PagingInfo.Ascending : true)">
+                    Email
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="2" asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-ascending="@(Model.PagingInfo.Sort == 2 ? !Model.PagingInfo.Ascending : true)">
+                    Ime
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="3" asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-ascending="@(Model.PagingInfo.Sort == 3 ? !Model.PagingInfo.Ascending : true)">
+                    Prezime
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="4" asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-ascending="@(Model.PagingInfo.Sort == 4 ? !Model.PagingInfo.Ascending : true)">
+                    Mjesto Stanovanja
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="7" asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-ascending="@(Model.PagingInfo.Sort == 7 ? !Model.PagingInfo.Ascending : true)">
+                    Broj Telefona
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="8" asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-ascending="@(Model.PagingInfo.Sort == 8 ? !Model.PagingInfo.Ascending : true)">
+                    URL
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="5" asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-ascending="@(Model.PagingInfo.Sort == 5 ? !Model.PagingInfo.Ascending : true)">
+                    Nadređeni suradnik
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="6" asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-ascending="@(Model.PagingInfo.Sort == 6 ? !Model.PagingInfo.Ascending : true)">
+                    Uloga
+                </a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var suradnik in Model.Suradnik)
+        {
+            <tr>
+                <td>@suradnik.Email</td>
+                <td>@suradnik.Ime</td>
+                <td>@suradnik.Prezime</td>
+                 <td>@suradnik.MjestoStanovanja</td>
+                  <td>@suradnik.BrojTelefona</td>
+                <td>@suradnik.URL</td>
+                <td>@suradnik.NadređeniEmail</td>
+                <td>
+                    @foreach (var uloga in suradnik.Uloga)
+                    {
+                        <span>@uloga.Ime</span>
+                        if (uloga != suradnik.Uloga.Last())
+                        {
+                            <span>,</span>
+                        }
+                    }
+                </td>
+                <td style="display: flex; align-items: center;">
+                    <!-- Example buttons, replace with your own actions -->
+                    <a asp-action="Edit" asp-route-Email="@suradnik.Email" asp-route-page="@Model.PagingInfo.CurrentPage"
+                       asp-route-sort="@Model.PagingInfo.Sort"
+                       asp-route-ascending="@Model.PagingInfo.Ascending" class="btn btn-info mr-2">Edit</a> <!-- 'mr-2' adds margin to the right -->
+
+                    <form asp-action="Delete" method="post" class="mx-2" asp-route-page="@Model.PagingInfo.CurrentPage"
+                          asp-route-sort="@Model.PagingInfo.Sort"
+                          asp-route-ascending="@Model.PagingInfo.Ascending">
+                        
+                        <input type="hidden" name="Email" value="@suradnik.Email" />
+                        <button type="submit" class="btn  btn-danger delete" title="Obriši">Obriši</button>
+                    </form>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+@section scripts {
+    <script src="~/js/pager.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,110 @@
+﻿@model List<Dokumentacija>
+@{
+    ViewData["Title"] = "JTP";
+}
+
+<style>
+    .container.body-container {
+        max-width: 75vw;
+    }
+</style>
+
+<h1 style="margin-top:15px">Dokumentacija</h1>
+
+@if (Model.Count == 0)
+{
+    <p>Nema dokumenata za prikaz...</p>
+}
+else
+{
+    <div class="float-start" style="margin-bottom: 20px;">
+        <a class="btn btn-primary" asp-action="Create">Dodaj dokumentaciju</a>
+    </div>
+
+
+    <div class="float-end">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                @for (int i = 1; i <= ViewBag.TotalPageCount; i++)
+                {
+                    <li class="page-item @(i == ViewBag.Page ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("JTP", new { page = i, sort = ViewBag.Sort, ascending = ViewBag.ascending })">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+
+    <table class="table  table-striped w-100" style="width:100%; max-width:100%;">
+        <thead class="bg-dark text-white">
+            <tr>
+                <th>
+                    <a asp-route-sort="1" asp-route-page="@ViewBag.Page" asp-route-ascending="@(ViewBag.Sort == 1 ? !ViewBag.Ascending : true)">
+                        Dokumentacija Id
+                    </a>
+                </th>
+                <th>
+                    <a asp-route-sort="2" asp-route-page="@ViewBag.Page" asp-route-ascending="@(ViewBag.Sort == 2 ? !ViewBag.Ascending : true)">
+                        Naziv Dokumentacije
+                    </a>
+                </th>
+                <th>
+                    <a asp-route-sort="3" asp-route-page="@ViewBag.Page" asp-route-ascending="@(ViewBag.Sort == 3 ? !ViewBag.Ascending : true)">
+                        Vrijeme Kreacije
+                    </a>
+                </th>
+                <th>
+                    <a asp-route-sort="4" asp-route-page="@ViewBag.Page" asp-route-ascending="@(ViewBag.Sort == 4 ? !ViewBag.Ascending : true)">
+                        Format
+                    </a>
+                </th>
+                <th>
+                    <a asp-route-sort="5" asp-route-page="@ViewBag.Page" asp-route-ascending="@(ViewBag.Sort == 5 ? !ViewBag.Ascending : true)">
+                        URL
+                    </a>
+                </th>
+                <th>
+                    <a asp-route-sort="6" asp-route-page="@ViewBag.Page" asp-route-ascending="@(ViewBag.Sort == 6 ? !ViewBag.Ascending : true)">
+                        Status Dovršenosti
+                    </a>
+                </th>
+                <th>
+                    <a asp-route-sort="7" asp-route-page="@ViewBag.Page" asp-route-ascending="@(ViewBag.Sort == 7 ? !ViewBag.Ascending : true)">
+                        Naziv Projekta
+                    </a>
+                </th>
+                <th>
+                    <a asp-route-sort="8" asp-route-page="@ViewBag.Page" asp-route-ascending="@(ViewBag.Sort == 8 ? !ViewBag.Ascending : true)">
+                        Vrsta Dokumentacije
+                    </a>
+                </th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var currentDokument in Model)
+            {
+                <tr>
+                    <td>@currentDokument.DokumentacijaId</td>
+                    <td>@currentDokument.NazivDokumentacije</td>
+                    <td>@currentDokument.VrijemeKreacije</td>
+                    <td>@currentDokument.Format</td>
+                    <td>@currentDokument.URL</td>
+                    <td>@currentDokument.StatusDovršenosti</td>
+                    <td>@currentDokument.Projekt.Ime</td>
+                    <td>@currentDokument.VrstaDokumentacije.Ime</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@currentDokument.DokumentacijaId"
+                           class="btn btn-warning">Edit</a>
+                    </td>
+                    <td>
+                        <form method="post" asp-action="Delete" asp-route-id="@currentDokument.DokumentacijaId">
+                            <button type="submit" class="btn btn-danger  delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

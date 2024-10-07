@@ -1,0 +1,56 @@
+﻿@using RPPP_WebApp.ViewModels
+@model PlanProjektaViewModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Uređivanje plana @Model.PlanProjekta.PlanProjektaId</h1>
+
+<form asp-action="Edit" asp-route-PlanProjektaId="@Model.PlanProjekta.PlanProjektaId" method="post">
+    <div class="form-group">
+        <label asp-for="@Model.PlanProjekta.PlaniraniPočetak"></label>
+        <input asp-for="@Model.PlanProjekta.PlaniraniPočetak" class="form-control" />
+        <span asp-validation-for="@Model.PlanProjekta.PlaniraniPočetak" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.PlanProjekta.PlaniraniKraj"></label>
+        <input asp-for="@Model.PlanProjekta.PlaniraniKraj" class="form-control" />
+        <span asp-validation-for="@Model.PlanProjekta.PlaniraniKraj" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.PlanProjekta.StvarniPočetak"></label>
+        <input asp-for="@Model.PlanProjekta.StvarniPočetak" class="form-control" />
+        <span asp-validation-for="@Model.PlanProjekta.StvarniPočetak" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.PlanProjekta.StvarniKraj"></label>
+        <input asp-for="@Model.PlanProjekta.StvarniKraj" class="form-control" />
+        <span asp-validation-for="@Model.PlanProjekta.StvarniKraj" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.PlanProjekta.ProjektId">Projekt: </label>
+        <select asp-for="@Model.PlanProjekta.ProjektId" asp-items="ViewBag.Projekti" class="form-control">
+            <option value="">---Odaberi projekt---</option>
+        </select>
+        <span asp-validation-for="@Model.PlanProjekta.ProjektId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.PlanProjekta.VoditeljEmail">Voditelj: </label>
+        <select asp-for="@Model.PlanProjekta.VoditeljEmail" asp-items="ViewBag.Suradnici" class="form-control">
+            <option value="">--Odaberi voditelja--</option>
+        </select>
+        <span asp-validation-for="@Model.PlanProjekta.VoditeljEmail" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Spremi</button>
+    <a asp-action="Index" asp-controller="PlanProjekta" class="btn btn-secondary">Odustani</a>
+</form>
+
+@section scripts {
+    <partial name="IncludeValidation" />
+}

@@ -1,0 +1,86 @@
+﻿@using RPPP_WebApp.ViewModels;
+    
+@model SuradnikViewModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+
+<form asp-action="Edit" asp-route-page="@ViewBag.Page"
+      asp-route-sort="@ViewBag.Sort"
+      asp-route-ascending="@ViewBag.Ascending" method="post">
+    <div asp-validation-summary="All"></div>
+    <input type="hidden" asp-for="@Model.suradnik.Email" />
+
+    <div class="form-group">
+        <label asp-for="@Model.suradnik.Ime"></label>
+        <input asp-for="@Model.suradnik.Ime" class="form-control" />
+        <div class="form-text"><span asp-validation-for="@Model.suradnik.Ime" class="text-danger"></span></div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.suradnik.Prezime"></label>
+        <input asp-for="@Model.suradnik.Prezime" class="form-control" />
+        <div class="form-text"><span asp-validation-for="@Model.suradnik.Prezime" class="text-danger"></span></div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.suradnik.MjestoStanovanja"></label>
+        <input asp-for="@Model.suradnik.MjestoStanovanja" class="form-control" />
+        <div class="form-text"><span asp-validation-for="@Model.suradnik.MjestoStanovanja" class="text-danger"></span></div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.suradnik.BrojTelefona"></label>
+        <input asp-for="@Model.suradnik.BrojTelefona" class="form-control" />
+        <div class="form-text"><span asp-validation-for="@Model.suradnik.BrojTelefona" class="text-danger"></span></div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.suradnik.URL"></label>
+        <input asp-for="@Model.suradnik.URL" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Uloge:</label>
+        @{
+            var ulogeList = ViewBag.UlogeList as List<Uloga>;
+        }
+        @foreach (var uloga in ulogeList)
+        {
+            <div class="form-check">
+                <input type="checkbox" id="uloga_@uloga.Ime" name="SelectedUloge"
+                       value="@uloga.Ime" class="form-check-input"
+                @(Model.SelectedUloge != null && Model.SelectedUloge.Contains(uloga.Ime) ? "checked" : "") />
+                <label for="uloga_@uloga.Ime" class="form-check-label">@uloga.Ime</label>
+            </div>
+        }
+    </div>
+
+    <!-- Add other fields as needed -->
+
+    <div class="form-group" style="margin-bottom: 20px;">
+        <label asp-for="@Model.suradnik.NadređeniEmail"></label>
+        <select asp-for="@Model.suradnik.NadređeniEmail" asp-items="ViewBag.Suradnici" class="form-control">
+            <option value="">Odaberite email nadređenog suradnika</option>
+        </select>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 20px;">
+        <label asp-for="@Model.SelectedProjekt"></label>
+        <select asp-for="@Model.SelectedProjekt" asp-items="ViewBag.Projekt" class="form-control" multiple>
+            <option value="">Odaberite projekte</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Spremi</button>
+    <a asp-action="Index" asp-route-page="@ViewBag.Page"
+       asp-route-sort="@ViewBag.Sort"
+       asp-route-ascending="@ViewBag.Ascending" asp-controller="Suradnik" class="btn btn-secondary">Odustani</a>
+
+</form>
+@section scripts {
+    <partial name="IncludeValidation" />
+}

@@ -1,0 +1,43 @@
+﻿@using RPPP_WebApp.ViewModels
+@model ProjektnaKarticaTransakcijaViewModel
+@{
+    ViewData["Title"] = "Edit2";
+}
+
+<h1>Dodavanje projektne kartice - 2. predaja</h1>
+
+<div class="md-container">
+    <form id="md-dokument_form" asp-action="Create2" asp-route-ProjektnaKarticaId="@Model.ProjektnaKartica.ProjektnaKarticaId" method="post">
+        <div class="md-form-group">
+            <button id="save" type="submit" class="btn btn-success">Spremi</button>
+            <a asp-action="Master2" asp-controller="ProjektnaKartica" class="btn btn-close"></a>
+        </div>
+        <div class="md-form-group">
+            <label asp-for="@Model.ProjektnaKartica.Banka"></label>
+            <div>
+                <input asp-for="@Model.ProjektnaKartica.Banka" class="form-control" />
+            </div>
+
+            <label asp-for="@Model.ProjektnaKartica.Iban"></label>
+            <div>
+                <input asp-for="@Model.ProjektnaKartica.Iban" class="form-control" />
+            </div>
+            <label asp-for="@Model.ProjektnaKartica.Stanje"></label>
+            <div>
+                <input asp-for="@Model.ProjektnaKartica.Stanje" class="form-control" />
+            </div>
+
+            <label asp-for="@Model.ProjektnaKartica.ProjektId">ID projekta</label>
+            <div>
+                <input asp-for="@Model.ProjektnaKartica.ProjektId" class="form-control" data-autocomplete="Projekt" />
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@section scripts {
+    <!--<partial name="IncludeValidation" /> -->
+    <script src="~/lib/jqueryui/jquery-ui.js"></script>
+    <script src="~/js/autocomplete.js" asp-append-version="true"></script>
+}

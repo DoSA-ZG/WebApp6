@@ -1,0 +1,96 @@
+﻿@model PosaoPageView
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index Posao</h1>
+
+<div style="margin-bottom: 20px;">
+    <a class="btn btn-primary" asp-action="Create">Dodaj Posao</a>
+</div>
+
+<div class="float-end">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            @for (int i = 1; i <= Model.PagingInfo.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.PagingInfo.CurrentPage ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { page = i, sort = Model.PagingInfo.Sort, ascending = Model.PagingInfo.Ascending })">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
+
+<table class="table  table-striped" style="width:100%">
+    <thead class="bg-dark text-white">
+        <tr>
+            <th>
+                <a asp-route-sort="1" asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-ascending="@(Model.PagingInfo.Sort == 1 ? !Model.PagingInfo.Ascending : true)">
+                    Opis
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="2" asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-ascending="@(Model.PagingInfo.Sort == 2 ? !Model.PagingInfo.Ascending : true)">
+                    Vrijeme početka rada
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="3" asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-ascending="@(Model.PagingInfo.Sort == 3 ? !Model.PagingInfo.Ascending : true)">
+                    Vrijeme kraja rada
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="4" asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-ascending="@(Model.PagingInfo.Sort == 4 ? !Model.PagingInfo.Ascending : true)">
+                    Vrsta posla
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="5" asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-ascending="@(Model.PagingInfo.Sort == 5 ? !Model.PagingInfo.Ascending : true)">
+                    Projekt
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="6" asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-ascending="@(Model.PagingInfo.Sort == 6 ? !Model.PagingInfo.Ascending : true)">
+                    Zadatak
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="7" asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-ascending="@(Model.PagingInfo.Sort == 7 ? !Model.PagingInfo.Ascending : true)">
+                    Suradnik
+                </a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var posao in Model.Posao)
+        {
+            <tr>
+                <td>@posao.Opis</td>
+                <td>@posao.VrijemePočetkaRada</td>
+                <td>@posao.VrijemeKrajaRada</td>
+                <td>@posao.VrstaPosla?.Ime</td>
+                <td>@posao.Zadatak.Zahtjev.PlanProjekta.Projekt.Ime</td>
+                <td>@posao.Zadatak?.OpisZadatka</td>
+                <td>@posao.SuradnikEmailNavigation?.Ime @posao.SuradnikEmailNavigation?.Prezime</td>
+                <td style="display: flex; align-items: center;">
+                    <a asp-action="Edit" asp-route-Id="@posao.PosaoId" asp-route-page="@Model.PagingInfo.CurrentPage"
+                       asp-route-sort="@Model.PagingInfo.Sort"
+                       asp-route-ascending="@Model.PagingInfo.Ascending" class="btn btn-info mr-2">Edit</a>
+
+
+                    <form asp-action="Delete" method="post" class="mx-2" asp-route-page="@Model.PagingInfo.CurrentPage"
+                          asp-route-sort="@Model.PagingInfo.Sort"
+                          asp-route-ascending="@Model.PagingInfo.Ascending">
+                        <input type="hidden" name="Id" value="@posao.PosaoId" />
+                        <button type="submit" class="btn  btn-danger delete" title="Obriši">Obriši</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section scripts {
+    <script src="~/js/pager.js" asp-append-version="true"></script>
+}

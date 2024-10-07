@@ -1,0 +1,121 @@
+﻿@model PlanProjektaPageView
+
+@{
+    ViewData["Title"] = "Master";
+}
+<div>
+    <h1 class="title">Plan projekta</h1>
+
+    <div class="card-header">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.PagingInfo.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.PagingInfo.CurrentPage ? "active" : "")">
+                        <a class="page-link"
+                           href="@Url.Action("Master", new { page = i, sort = Model.PagingInfo.Sort, ascending = Model.PagingInfo.Ascending })">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+
+    <table class="table table-hover" style="width:100%">
+        <thead class="bg-danger text-white">
+            <tr>
+                <th style="text-align:center">
+                    <a asp-route-sort="1" asp-route-page="@Model.PagingInfo.CurrentPage"
+                       asp-route-ascending="@(Model.PagingInfo.Sort == 1 ? !Model.PagingInfo.Ascending : true)">
+                        Plan projekta ID
+                    </a>
+                </th>
+                <th>
+                    <a asp-route-sort="2" asp-route-page="@Model.PagingInfo.CurrentPage"
+                       asp-route-ascending="@(Model.PagingInfo.Sort == 2 ? !Model.PagingInfo.Ascending : true)">
+                        Planirani početak
+                    </a>
+                </th>
+                <th>
+                    <a asp-route-sort="3" asp-route-page="@Model.PagingInfo.CurrentPage"
+                       asp-route-ascending="@(Model.PagingInfo.Sort == 3 ? !Model.PagingInfo.Ascending : true)">
+                        Planirani kraj
+                    </a>
+                </th>
+                <th>
+                    <a asp-route-sort="4" asp-route-page="@Model.PagingInfo.CurrentPage"
+                       asp-route-ascending="@(Model.PagingInfo.Sort == 4 ? !Model.PagingInfo.Ascending : true)">
+                        Stvarni početak
+                    </a>
+                </th>
+                <th>
+                    <a asp-route-sort="5" asp-route-page="@Model.PagingInfo.CurrentPage"
+                       asp-route-ascending="@(Model.PagingInfo.Sort == 5 ? !Model.PagingInfo.Ascending : true)">
+                        Stvarni kraj
+                    </a>
+                </th>
+                <th>
+                    <a asp-route-sort="6" asp-route-page="@Model.PagingInfo.CurrentPage"
+                       asp-route-ascending="@(Model.PagingInfo.Sort == 6 ? !Model.PagingInfo.Ascending : true)">
+                        Projekt (kratica)
+                    </a>
+                </th>
+                <th>
+                    <a asp-route-sort="7" asp-route-page="@Model.PagingInfo.CurrentPage"
+                       asp-route-ascending="@(Model.PagingInfo.Sort == 7 ? !Model.PagingInfo.Ascending : true)">
+                        Voditelj (email)
+                    </a>
+                </th>
+                <th>
+                    <a asp-route-sort="8" asp-route-page="@Model.PagingInfo.CurrentPage"
+                       asp-route-ascending="@(Model.PagingInfo.Sort == 8 ? !Model.PagingInfo.Ascending : true)">
+                        Zahtjevi
+                    </a>
+                </th>
+                <th>
+                    <a asp-route-sort="9" asp-route-page="@Model.PagingInfo.CurrentPage"
+                       asp-route-ascending="@(Model.PagingInfo.Sort == 9 ? !Model.PagingInfo.Ascending : true)">
+                        Etape
+                    </a>
+                </th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody class="align-baseline">
+            @foreach (var plan in Model.Planovi)
+            {
+                <tr>
+                    <td>@plan.PlanProjektaId</td>
+                    <td>@plan.PlaniraniPočetak</td>
+                    <td>@plan.PlaniraniKraj</td>
+                    <td>@plan.StvarniPočetak</td>
+                    <td>@plan.StvarniKraj</td>
+                    <td>@plan.Projekt.Kratica</td>
+                    <td>@plan.VoditeljEmail</td>
+                    <td>
+                        @foreach (var zahtjev in plan.Zahtjev)
+                        {
+                            <span>@zahtjev.Ime</span>
+                            if (zahtjev != plan.Zahtjev.Last())
+                            {
+                                <span>,</span>
+                            }
+                        }
+                    </td>
+                    <td>
+                        @foreach (var etapa in plan.Etapa)
+                        {
+                            <span>@etapa.Ime</span>
+                            if (etapa != plan.Etapa.Last())
+                            {
+                                <span>,</span>
+                            }
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@plan.PlanProjektaId" class="btn btn-info mr-2">Detalji</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

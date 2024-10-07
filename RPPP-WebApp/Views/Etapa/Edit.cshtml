@@ -1,0 +1,45 @@
+@using RPPP_WebApp.ViewModels
+@model EtapaViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Uređivanje etape @Model.Etapa.EtapaId</h1>
+
+<form asp-action="Edit" asp-route-EtapaId="@Model.Etapa.EtapaId" method="post">
+
+    <div class="form-group">
+        <label asp-for="@Model.Etapa.Ime"></label>
+        <input asp-for="@Model.Etapa.Ime" class="form-control" />
+        <span asp-validation-for="@Model.Etapa.Ime" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Etapa.Opis"></label>
+        <input asp-for="@Model.Etapa.Opis" class="form-control" type="text" />
+        <span asp-validation-for="@Model.Etapa.Opis" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Etapa.PlanProjektaId">Odaberi plan projekta: </label>
+        <select asp-for="@Model.Etapa.PlanProjektaId" asp-items="ViewBag.PlanoviProjekta" class="form-control">
+            <option value=""></option>
+        </select>
+        <span asp-validation-for="@Model.Etapa.PlanProjektaId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Etapa.AktivnostId">Odaberi aktivnost: </label>
+        <select asp-for="@Model.Etapa.AktivnostId" asp-items="ViewBag.Aktivnosti" class="form-control">
+            <option value=""></option>
+        </select>
+        <span asp-validation-for="@Model.Etapa.AktivnostId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Potvrdi promjene</button>
+    <a asp-action="Index" asp-controller="Etapa" class="btn btn-secondary">Odustani</a>
+</form>
+@section scripts {
+    <partial name="IncludeValidation" />
+}

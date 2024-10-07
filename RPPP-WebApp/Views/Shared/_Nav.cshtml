@@ -1,0 +1,103 @@
+﻿﻿<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" asp-action="Index" asp-controller="Home">Group 06</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" asp-action="Index" asp-controller="Home">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Student 28
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" asp-controller="PlanProjekta" asp-action="Index">Plan projekta (STP)</a></li>
+                        <li><a class="dropdown-item" asp-controller="Etapa" asp-action="Index">Etapa (JTP)</a></li>
+                        <li><a class="dropdown-item" asp-controller="PlanProjekta" asp-action="Master">Plan projekta (Master)</a></li>
+                        <li>
+                           <hr class="dropdown-divider">
+                        </li>
+                        <li class ="dropdown-item">----Druga predaja----</li>
+                        <li><a class="dropdown-item" asp-controller="PlanProjekta" asp-action="Index2">Plan projekta (STP)</a></li>
+                        <li><a class="dropdown-item" asp-controller="PlanProjekta" asp-action="Master2">Plan projekta (Master)</a></li>
+                        <li><a class="dropdown-item" asp-controller="PlanProjekta" asp-action="UvozIzvoz">Uvoz i Izvoz podataka</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Student 30
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" asp-controller="Zahtjev" asp-action="Master" asp-route-ViewType="Master">Zahtjev (Master)</a></li>
+                        <li><a class="dropdown-item" asp-controller="Zahtjev" asp-action="Index">Zahtjev (STP)</a></li>
+                        <li><a class="dropdown-item" asp-controller="Zadatak" asp-action="Index">Zadatak (JTP)</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" asp-controller="Zahtjev" asp-action="Master" asp-route-ViewType="Show">Zahtjev (Master)</a></li>
+                        <li><a class="dropdown-item" asp-controller="Zahtjev" asp-action="UvozIzvoz">Uvoz i Izvoz podataka</a></li>
+                    </ul>
+                </li>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                       Student 7
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" asp-controller="Suradnik" asp-action="Master">Suradnik (STP)</a></li>
+                        <li><a class="dropdown-item" asp-controller="Suradnik" asp-action="Index">Suradnik (Master)</a></li>
+                        <li><a class="dropdown-item" asp-controller="Posao" asp-action="Index">Posao (JTP)</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li class="dropdown-item">----Druga predaja----</li>
+                        <li><a class="dropdown-item" asp-controller="Suradnik" asp-action="Master2">Master-Detail</a></li>
+                        <li><a class="dropdown-item" asp-controller="Suradnik" asp-action="UvozIzvoz">Uvoz-Izvoz</a></li>
+                    </ul>
+                </li>
+                </li>
+                </li>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Student 48
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" asp-controller="Projekt" asp-action="ManageTable">Manage Table (Master)</a></li>
+                        <li><a class="dropdown-item" asp-controller="Projekt" asp-action="STP">Projekt (STP)</a></li>
+                        <li><a class="dropdown-item" asp-controller="Dokumentacija" asp-action="JTP">Dokumentacija (JTP)</a></li>
+                        <li><a class="dropdown-item" asp-controller="ProjektDokumentacijaReport" asp-action="ImportExport">Import/Export</a></li>
+                    </ul>
+                </li>
+                </li>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Student 23
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" asp-controller="ProjektnaKartica" asp-action="Master">Projektna Kartica (Master)</a></li>
+                        <li><a class="dropdown-item" asp-controller="ProjektnaKartica" asp-action="Index">Projektna Kartica (STP)</a></li>
+                        <li><a class="dropdown-item" asp-controller="Transakcija" asp-action="Index">Transakcija (JTP)</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" asp-controller="ProjektnaKartica" asp-action="Master2" asp-route-viewType="Master2">Master-Detail (2. predaja)</a></li>
+                        <li><a class="dropdown-item" asp-controller="ProjektnaKartica" asp-action="UvozIzvoz">Uvoz i Izvoz podataka</a></li>
+
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>

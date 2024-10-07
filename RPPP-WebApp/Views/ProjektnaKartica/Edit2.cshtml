@@ -1,0 +1,196 @@
+﻿@using RPPP_WebApp.ViewModels
+@model ProjektnaKarticaTransakcijaViewModel
+@{
+    ViewData["Title"] = "Edit2";
+}
+
+<h1>Uređivanje projektne kartice @Model.ProjektnaKartica.ProjektnaKarticaId - 2. predaja</h1>
+
+<div class="md-container">
+    <form id="md-dokument_form" asp-action="Edit2" asp-route-ProjektnaKarticaId="@Model.ProjektnaKartica.ProjektnaKarticaId" method="post">
+        <div class="md-form-group">
+            <button id="save" type="submit" class="btn btn-success">Spremi</button>
+            <a asp-action="Master2" asp-controller="ProjektnaKartica" class="btn btn-close"></a>
+        </div>
+        <div class="md-form-group">
+            <label asp-for="@Model.ProjektnaKartica.Banka"></label>
+            <div>
+                <input asp-for="@Model.ProjektnaKartica.Banka" class="form-control" />
+            </div>
+
+            <label asp-for="@Model.ProjektnaKartica.Iban"></label>
+            <div>
+                <input asp-for="@Model.ProjektnaKartica.Iban" class="form-control" />
+            </div>
+            <label asp-for="@Model.ProjektnaKartica.Stanje"></label>
+            <div>
+                <input asp-for="@Model.ProjektnaKartica.Stanje" class="form-control" />
+            </div>
+
+            <label asp-for="@Model.ProjektnaKartica.Projekt.Ime">Ime projekta</label>
+            <div>
+                <input asp-for="@Model.ProjektnaKartica.Projekt.Ime" class="form-control" readonly="readonly"/>
+            </div>
+        </div>
+    </form>
+    <br />
+    <h5>Ulazne transakcije</h5>
+    <table class="table table-striped" id="table-transakcije">
+        <thead>
+            <tr>
+                @{
+                    string[] nazivi1 = { "ID", "Iznos", "IBAN Pošiljatelja", "Vrsta", "Projektna kartica pošiljatelja", "Akcije" };
+                    for (int i = 0; i < nazivi1.Length; i++)
+                    {
+                        <th class="text-center">
+                            @nazivi1[i]
+                        </th>
+                    }
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var transakcija in Model.UlazneTransakcije)
+            {
+                <tr>
+                    <form asp-action="EditUlaz" asp-controller="Transakcija" asp-route-TransakcijaId="@transakcija.TransakcijaId" asp-route-ProjektnaKarticaPrimateljId="@Model.ProjektnaKartica.ProjektnaKarticaId" method="post">
+                    <td>
+                        <input type="hidden" name="UlazneTransakcije.Index" value="@transakcija.TransakcijaId" />
+                        <input style="width: 45px; text-align: center;" disabled value="@transakcija.TransakcijaId" asp-for="@transakcija.TransakcijaId">
+                        <input type="hidden" name="UlazneTransakcije[@transakcija.TransakcijaId].TransakcijaId" value="@transakcija.TransakcijaId" asp-for="@transakcija.TransakcijaId" />
+                        <input type="hidden" value="@Model.ProjektnaKartica.ProjektnaKarticaId" asp-for="@Model.ProjektnaKartica.ProjektnaKarticaId">
+                    </td>
+                    <td>
+                        <input style="width: 120px;" name="UlazneTransakcije[@transakcija.TransakcijaId].Iznos" asp-for="@transakcija.Iznos" value="@transakcija.Iznos" class="form-control" />
+                    </td>
+                    <td>
+                        <input style="width: 120px;" name="UlazneTransakcije[@transakcija.TransakcijaId].IbanIsporučitelja" asp-for="@transakcija.IbanIsporučitelja" value="@transakcija.IbanIsporučitelja" class="form-control" />
+                    </td>
+                    <td>
+                        <input style="width: 120px;" name="UlazneTransakcije[@transakcija.TransakcijaId].VrstaTransakcije.Ime" asp-for="@transakcija.VrstaTransakcije.Ime" value="@transakcija.VrstaTransakcije.Ime" class="form-control" />
+                    </td>
+                    <td>
+                        <input style="width: 120px;" name="UlazneTransakcije[@transakcija.TransakcijaId].ProjektnaKarticaIsporučiteljId" asp-for="@transakcija.ProjektnaKarticaIsporučiteljId" value="@transakcija.ProjektnaKarticaIsporučiteljId" class="form-control" />
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-success" type="submit">Spremi</button>
+                    </td>
+                    </form>
+                    <form asp-action="Delete2" asp-controller="Transakcija" asp-route-TransakcijaId="@transakcija.TransakcijaId" asp-route-ProjektnaKarticaId="@Model.ProjektnaKartica.ProjektnaKarticaId" method="post">
+                    <td>
+                        <button class="btn btn-sm btn-danger" type="submit">Ukloni</button>
+                    </td>
+                    </form>
+                </tr>
+            }
+            <tr>
+                <form asp-action="CreateUlaz" asp-controller="Transakcija" method="post">
+                    <input type="hidden" name="ProjektnaKarticaId" value="@Model.ProjektnaKartica.ProjektnaKarticaId" />
+                    <input type="hidden" name="IbanPrimatelja" value="@Model.ProjektnaKartica.Iban" />
+                <td>
+                    <input type="text" class="form-control" readonly="readonly"/>
+                </td>
+                <td>
+                    <input id="transakcija-iznos" type="number" name="Iznos" class="form-control" />
+                </td>
+                <td>
+                    <input id="transakcija-ibanIsporučitelja" type="number" name="IbanIsporučitelja" class="form-control" />
+                </td>
+                <td>
+                    <input id="vrsta-id" type="hidden" name="VrstaId" data-autocomplete-placeholder="VrstaTransakcije" />
+                    <input id="vrsta-ime" type="text" name="VrstaIme" class="form-control" data-autocomplete="VrstaTransakcije" />
+                </td>
+                <td>
+                    <input id="transakcija-projektnaKarticaIsporučiteljId" type="number" name="ProjektnaKarticaIsporučiteljId" class="form-control" data-autocomplete="ProjektnaKartica"/>
+                </td>
+                <td colspan="3">
+                    <button class="btn btn-sm btn-primary" type="submit">Dodaj</button>
+                </td>
+                </form>
+            </tr>
+        </tbody>
+    </table>
+    <h5>Izlazne transakcije</h5>
+    <table class="table table-striped" id="table-transakcije">
+        <thead>
+            <tr>
+                @{
+                    string[] nazivi = { "ID", "Iznos", "IBAN Primatelja", "Vrsta", "Projektna kartica primatelja", "" };
+                    for (int i = 0; i < nazivi.Length; i++)
+                    {
+                        <th class="text-center">
+                            @nazivi[i]
+                        </th>
+                    }
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var transakcija in Model.IzlazneTransakcije)
+            {
+                <tr>
+                    <form asp-action="EditIzlaz" asp-controller="Transakcija" asp-route-TransakcijaId="@transakcija.TransakcijaId" asp-route-ProjektnaKarticaIsporučiteljId="@Model.ProjektnaKartica.ProjektnaKarticaId" method="post">
+                    <td>
+                        <input type="hidden" name="IzlazneTransakcije.Index" value="@transakcija.TransakcijaId" />
+                        <input style="width: 45px; text-align: center;" disabled value="@transakcija.TransakcijaId" asp-for="@transakcija.TransakcijaId">
+                        <input type="hidden" name="IzlazneTransakcije[@transakcija.TransakcijaId].TransakcijaId" value="@transakcija.TransakcijaId" asp-for="@transakcija.TransakcijaId" />
+                        <input type="hidden" value="@Model.ProjektnaKartica.ProjektnaKarticaId" asp-for="@Model.ProjektnaKartica.ProjektnaKarticaId">
+                    </td>
+                    <td>
+                        <input style="width: 120px;" name="IzlazneTransakcije[@transakcija.TransakcijaId].Iznos" asp-for="@transakcija.Iznos" value="@transakcija.Iznos" class="form-control"/>
+                    </td>
+                    <td>
+                        <input style="width: 120px;" name="IzlazneTransakcije[@transakcija.TransakcijaId].IbanPrimatelja" asp-for="@transakcija.IbanPrimatelja" value="@transakcija.IbanPrimatelja" class="form-control" />
+                    </td>
+                    <td>
+                        <input style="width: 120px;" name="IzlazneTransakcije[@transakcija.TransakcijaId].VrstaTransakcije.Ime" asp-for="@transakcija.VrstaTransakcije.Ime" value="@transakcija.VrstaTransakcije.Ime" class="form-control" />
+                    </td>
+                    <td>
+                        <input style="width: 120px;" name="IzlazneTransakcije[@transakcija.TransakcijaId].ProjektnaKarticaPrimateljId" asp-for="@transakcija.ProjektnaKarticaPrimateljId" value="@transakcija.ProjektnaKarticaPrimateljId" class="form-control" />
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-success" type="submit">Spremi</button>
+                    </td>
+                    </form>
+                    <form asp-action="Delete2" asp-controller="Transakcija" asp-route-TransakcijaId="@transakcija.TransakcijaId" asp-route-ProjektnaKarticaId="@Model.ProjektnaKartica.ProjektnaKarticaId" method="post">
+                    <td>
+                        <button class="btn btn-sm btn-danger" type="submit">Ukloni</button>
+                    </td>
+                    </form>
+                </tr>
+            }
+            <tr>
+                <form asp-action="CreateIzlaz" asp-controller="Transakcija" method="post">
+                    <input type="hidden" name="ProjektnaKarticaId" value="@Model.ProjektnaKartica.ProjektnaKarticaId" />
+                    <input type="hidden" name="IbanIsporučitelja" value="@Model.ProjektnaKartica.Iban" />
+                <td>
+                    <input type="text" class="form-control" readonly="readonly" />
+                </td>
+                <td>
+                    <input id="transakcija-iznos" type="number" name="Iznos" class="form-control" />
+                </td>
+                <td>
+                    <input id="transakcija-ibanIsporučitelja" type="number" name="IbanPrimatelja" class="form-control" />
+                </td>
+                <td>
+                    <input id="vrsta-id" type="hidden" name="VrstaId" data-autocomplete-placeholder="VrstaTransakcije" />
+                    <input id="vrsta-ime" type="text" name="VrstaIme" class="form-control" data-autocomplete="VrstaTransakcije" />
+                </td>
+                <td>
+                    <input id="transakcija-projektnaKarticaIsporučiteljId" type="number" name="ProjektnaKarticaPrimateljId" class="form-control" data-autocomplete="ProjektnaKartica" />
+                </td>
+                <td colspan="3">
+                    <button class="btn btn-sm btn-primary" type="submit">Dodaj</button>
+                </td>
+                </form>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+@section scripts {
+    <!--<partial name="IncludeValidation" /> -->
+    <script src="~/lib/jqueryui/jquery-ui.js"></script>
+    <script src="~/js/autocomplete.js" asp-append-version="true"></script>
+}

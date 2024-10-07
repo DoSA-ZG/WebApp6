@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Uvoz / Izvoz";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<ul>
+    <li class="form-control">
+        <a asp-controller="PlanProjektaReport" asp-action="PlanProjektaMD2">Excel - MD (Plan projekta + Etape)</a>
+    </li>
+    <li class="form-control">
+        <a asp-controller="PlanProjektaReport" asp-action="Planovi">Excel - Popis Planova</a>
+    </li>
+    <li class="form-control">
+        <a asp-controller="PlanProjektaReport" asp-action="Etape">Excel - Popis Etapa</a>
+    </li>
+    <li class="form-control">
+        <a asp-controller="PlanProjektaReport" asp-action="PlanoviPDF">PDF - Popis Planova</a>
+    </li>
+    <li class="form-control">
+        <a asp-controller="PlanProjektaReport" asp-action="EtapePDF">PDF - Popis Etapa</a>
+    </li>
+    <li class="form-control">
+        <a asp-controller="PlanProjektaReport" asp-action="PlanoviTemplate">Template za uvoz podataka - Planovi</a>
+    </li>
+    <li class="form-control">
+        <a asp-controller="PlanProjektaReport" asp-action="EtapeTemplate">Template za uvoz podataka - Etape</a>
+    </li>
+</ul>
+
+<h3>Uvezi Plan/ove</h3>
+
+<form method="post" enctype="multipart/form-data" asp-action="UveziPlan" asp-controller="PlanProjektaReport">
+    <div class="form-control">
+        <label for="excelFile">Odaberite Excel datoteku:</label>
+        <input type="file" class="form-control-file" id="excelFile" name="excelFile" accept=".xlsx">
+        <button type="submit" class="btn btn-primary">Uvezi podatke</button>
+    </div>
+</form>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success mt-3" role="alert">
+        @ViewBag.Message
+    </div>
+}
+
+<h3>Uvezi Etapu/e</h3>
+
+<form method="post" enctype="multipart/form-data" asp-action="UveziEtapu" asp-controller="PlanProjektaReport">
+    <div class="form-control">
+        <label for="excelFile">Odaberite Excel datoteku:</label>
+        <input type="file" class="form-control-file" id="excelFile2" name="excelFile2" accept=".xlsx">
+        <button type="submit" class="btn btn-primary">Uvezi podatke</button>
+    </div>
+</form>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success mt-3" role="alert">
+        @ViewBag.Message
+    </div>
+}

@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Transakcija>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Transakcije</h1>
+
+<div style="margin-bottom: 20px;">
+    <a class="btn btn-primary" asp-action="Create">Dodaj Transakciju</a>
+</div>
+
+<table class="table table-striped" style="width:100%">
+    <thead class="bg-dark text-white">
+        <tr>
+            <th>Transakcija ID</th>
+            <th>IBAN Isporučitelja</th>
+            <th>IBAN Primatelja</th>
+            <th>Iznos</th>
+            <th>Vrsta Transakcije</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var transakcija in Model)
+        {
+            <tr>
+                <td>@transakcija.TransakcijaId</td>
+                <td>@transakcija.IbanIsporučitelja</td>
+                <td>@transakcija.IbanPrimatelja</td>
+                <td>@transakcija.Iznos</td>
+                <td>@transakcija.VrstaTransakcije.Ime</td>
+                <td style="display: flex; align-items: center;">
+                    <a asp-action="Edit" asp-route-TransakcijaId="@transakcija.TransakcijaId" class="btn btn-info mr-2">Edit</a>
+                    <form asp-action="Delete" method="post" class="mx-2">
+                        <input type="hidden" name="TransakcijaId" value="@transakcija.TransakcijaId" />
+                        <button type="submit" class="btn btn-danger delete" title="Obriši">Obriši</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

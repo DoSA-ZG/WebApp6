@@ -1,0 +1,245 @@
+﻿@model SuradnikDetailView
+@{
+    ViewBag.Title = "Suradnik: " + @Model.Email;
+}
+
+<div class="container">
+    <form id="dokument_form" method="post" asp-action="Edit2"
+        asp-route-page="@ViewBag.Page"
+        asp-route-sort="@ViewBag.Sort"
+        asp-route-ascending="@ViewBag.Ascending"
+        asp-route-position="@ViewBag.Position">
+
+    <input type="hidden" asp-for="@Model.Email" />
+    <br />
+    <div class="row text-center">
+        <div class="col-sm-2">
+            @if (ViewBag.Previous != null)
+            {
+                <a class="btn btn-sm btn-primary"
+                   asp-action="Edit2"
+                   asp-route-page="@ViewBag.Page"
+                   asp-route-sort="@ViewBag.Sort"
+                   asp-route-ascending="@ViewBag.Ascending"
+                   asp-route-position="@(ViewBag.Position - 1)"
+                   asp-route-email="@ViewBag.Previous">
+                        Prethodni
+                </a>
+            }
+        </div>
+        <div class="col-sm-8">
+            <h4>
+                @Model.Ime @Model.Prezime
+            </h4>
+        </div>
+       <div class="col-sm-2">
+                <div class="button-group">
+    @if (ViewBag.Next != null)
+    {
+        
+            <a class="btn btn-sm btn-primary" asp-action="Edit2"
+               asp-route-page="@ViewBag.Page"
+               asp-route-sort="@ViewBag.Sort"
+               asp-route-ascending="@ViewBag.Ascending"
+               asp-route-position="@(ViewBag.Position + 1)"
+               asp-route-email="@ViewBag.Next">
+               Sljedeći
+            </a>
+        
+    }
+   
+        <button id="save" type="submit" class="btn btn-sm btn-primary save" title="Spremi">Spremi</button>
+                </div>
+        <br />
+                <div class="button-group">
+        <a class="btn btn-sm btn-primary cancel"
+           asp-action="Edit2"
+           asp-route-email="@Model.Email"
+           asp-route-page="@ViewBag.Page"
+           asp-route-sort="@ViewBag.Sort"
+           asp-route-ascending="@ViewBag.Ascending"
+           asp-route-position="@ViewBag.Position"
+           title="Osvježi">
+            Osvježi
+        </a>
+
+        <a class="btn btn-sm btn-primary cancel"
+           asp-action="Master2"
+           asp-route-page="@ViewBag.Page"
+           asp-route-sort="@ViewBag.Sort"
+           asp-route-ascending="@ViewBag.Ascending"
+           title="Odustani">
+            Odustani
+        </a>
+    </div>
+             
+</div>
+
+            <div asp-validation-summary="All" class="form-group row"></div>
+    </div>
+    <hr>
+    <div class="form-group row justify-content-center">
+        <label asp-for="@Model.Email" class="col-sm-1 col-form-label"></label>
+        <div class="col-sm-2">
+            <input asp-for="@Model.Email" readonly="readonly" class="form-control" />
+        </div>
+        <label asp-for="@Model.Ime" class="col-sm-1 col-form-label"></label>
+        <div class="col-sm-1">
+            <input asp-for="@Model.Ime" class="form-control" />
+        </div>
+        <label asp-for="@Model.Prezime" class="col-sm-1 col-form-label"></label>
+        <div class="col-sm-2">
+            <input asp-for="@Model.Prezime" class="form-control" />
+        </div>
+        <label asp-for="@Model.NadredeniEmail" class="col-sm-1 col-form-label"></label>
+        <div class="col-sm-3">
+            @{
+                string displayName = $"{Model.nadredeniSuradnik?.Ime} {Model.nadredeniSuradnik?.Prezime}";
+            }
+
+            <input asp-for="@Model.nadredeniSuradnik" data-autocomplete="nadredeniSuradnik" 
+               data-autocomplete-placeholder-name="nadredenisuradnik" class="form-control" value="@displayName" />
+            <input type="hidden" asp-for="@Model.NadredeniEmail" data-autocomplete-placeholder="nadredenisuradnik" />
+        </div>
+
+    </div>
+    <br />
+    <br />
+    <div class="form-group row justify-content-center">
+        <label asp-for="@Model.URL" class="col-sm-1 col-form-label"></label>
+        <div class="col-sm-3">
+            <input asp-for="@Model.URL"  class="form-control" />
+        </div>
+        <label asp-for="@Model.MjestoStanovanja" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-2">
+            <input asp-for="@Model.MjestoStanovanja"  class="form-control" />
+        </div>
+        <label asp-for="@Model.BrojTelefona" class="col-sm-1 col-form-label"></label>
+        <div class="col-sm-3">
+            <input asp-for="@Model.BrojTelefona"  class="form-control" />
+        </div>
+    </div>
+    <br />
+    <div class="form-group justify-content-center">
+        <label>Uloge:</label>
+        @{
+            var ulogeList = ViewBag.UlogeList as List<Uloga>;
+        }
+        @foreach (var uloga in ulogeList)
+        {
+                <input type="hidden" name="Uloga.Index" value="@uloga.UlogaId" />
+            <div class="form-check">
+                    <input type="checkbox" id="uloga_@uloga.Ime" name="Uloga[@uloga.UlogaId].Ime"
+                       value="@uloga.Ime" class="form-check-input" 
+                @(Model.Uloga != null && Model.Uloga.Contains(uloga) ? "checked" : "") />
+                <label for="uloga_@uloga.Ime" class="form-check-label">@uloga.Ime</label>
+            </div>
+        }
+          
+    </div>
+
+    <hr>
+    <h5>Poslovi</h5>
+    <div class="row">
+            <table class="table table-striped" id="table-posao">
+            <thead>
+                <tr>
+                    @{
+                        string[] nazivi = {"Opis", "Vrijeme početka", "Vrijeme kraja", "Vrsta posla", "Zadatak" };
+                        for (int i = 0; i < nazivi.Length; i++)
+                        {
+                            <th class="text-center">
+                                @nazivi[i]
+                            </th>
+                        }
+                    }
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var posao in Model.Posao)
+                {
+                    
+                    <tr>
+                        <td class="text-left ">
+                            <input type="hidden" name="Posao.Index" value="@posao.PosaoId" />
+                            <input type="hidden" name="Posao[@posao.PosaoId].PosaoId"  value="@posao.PosaoId" />
+                            <input name="Posao[@posao.PosaoId].Opis" class="form-control" value="@posao.Opis" />
+                        </td>
+                        <td class="text-center">
+                            <input name="Posao[@posao.PosaoId].VrijemePočetkaRada" class="form-control" type="datetime-local" value="@posao.VrijemePočetkaRada.ToString("yyyy-MM-ddTHH:mm")" />
+                        </td>
+                        <td class="text-center">
+                            <input name="Posao[@posao.PosaoId].VrijemeKrajaRada" class="form-control" type="datetime-local" value="@posao.VrijemeKrajaRada.ToString("yyyy-MM-ddTHH:mm")" />
+                        </td>
+
+                        <td class="text-right ">
+                                <!-- <div class="form-group" >
+                                    <select name="Posao[@posao.PosaoId].VrstaPosla.Ime" asp-for="@posao.VrstaPosla.Ime" asp-items="ViewBag.vrstaPosla" class="form-control">
+                                    <option value="">Odaberite vrstu posla</option>
+                                        input type="hidden" name="Posao[@posao.PosaoId].VrstaPoslaId"  value="@posao." />
+                                </select>
+                                </div>-->
+                                <input type="hidden" name="Posao[@posao.PosaoId].VrstaPoslaId"  value="@posao.VrstaPoslaId" />
+                                <input  readonly="readonly" name="Posao[@posao.PosaoId].VrstaPoslaIme" 
+                                       class="form-control" value="@posao.VrstaPosla.Ime" />
+                 
+               
+                        </td>
+                        <td class="text-right ">  
+                                <input type="hidden" name="Posao[@posao.PosaoId].ZadatakId" value="@posao.ZadatakId" />
+                            <input  readonly="readonly" name="Posao[@posao.PosaoId].ZadatakIme" 
+                                    class="form-control" value="@(posao.Zadatak?.OpisZadatka + "(" + posao.Zadatak?.Zahtjev?.PlanProjekta?.Projekt?.Ime + ")")" />
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-danger deleterow" title="Izbaci"><i class="fa fa-minus"></i></button>
+                        </td>
+                            <div class="col-sm-1">
+                                <input name="Posao[@posao.PosaoId].SuradnikEmail" type="hidden" value="marko@gmail.com" />
+                            </div>
+                    </tr>
+
+
+                }
+                    <tr>
+                        <td>
+                            <input id="posao-opis" class="form-control" type="text" />
+                        </td>
+                        <td class="text-center col-sm-1">
+                            <input id="posao-pocetak" class="form-control" type="datetime-local" />
+                        </td>
+                        <td class="text-center col-sm-1">
+                            <input id="posao-kraj" class="form-control" type="datetime-local" />
+                        </td>
+                        <td class="text-right col-sm-2">
+                            <input type="hidden" id="posao-vrstaid" data-autocomplete-placeholder="vrstaPosla"  />
+                            <input id="posao-vrsta" data-autocomplete="vrstaPosla"
+                                   class="form-control"/>
+                        </td>
+                        <td class="text-right col-sm-2">
+                            <input type="hidden" id="posao-zadatakid" data-autocomplete-placeholder="zadatak" />
+                            <input id="posao-zadatak" data-autocomplete="zadatak"
+                                   class="form-control" />
+                        </td>
+                        <td class="text-left" colspan="3">
+                            <button id="posao-dodaj" class="btn btn-sm btn-secondary" title="Dodaj">Dodaj</button>
+                        </td> 
+                    </tr>
+            </tbody>
+        </table>
+    </div>
+    </form>
+</div>
+
+<partial name="NoviPosaoTemplate" />
+
+@section styles {
+    <link rel="stylesheet" href="~/lib/jqueryui/themes/base/jquery-ui.css" />
+}
+
+@section scripts {
+     <partial name="IncludeValidation" />  
+    <script src="~/lib/jqueryui/jquery-ui.js"></script>
+    <script src="~/js/autocomplete.js" asp-append-version="true"></script>
+     <script src="~/js/posao.js" asp-append-version="true"></script> 
+}

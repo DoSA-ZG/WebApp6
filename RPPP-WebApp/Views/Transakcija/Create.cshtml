@@ -1,0 +1,50 @@
+﻿@using RPPP_WebApp.ViewModels
+@model TransakcijaViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Dodaj transakciju</h1>
+
+<form asp-action="Create" method="post">
+
+    <div class="form-group">
+        <label asp-for="@Model.Transakcija.IbanIsporučitelja"></label>
+        <input asp-for="@Model.Transakcija.IbanIsporučitelja" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Transakcija.IbanPrimatelja"></label>
+        <input asp-for="@Model.Transakcija.IbanPrimatelja" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Transakcija.Iznos"></label>
+        <input asp-for="@Model.Transakcija.Iznos" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Transakcija.ProjektnaKarticaIsporučiteljId"></label>
+        <select asp-for="@Model.Transakcija.ProjektnaKarticaIsporučiteljId" asp-items="ViewBag.ProjektneKartice" class="form-control">
+            <option value="">Odaberi projektnu karticu isporučitelja</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Transakcija.ProjektnaKarticaPrimateljId"></label>
+        <select asp-for="@Model.Transakcija.ProjektnaKarticaPrimateljId" asp-items="ViewBag.ProjektneKartice" class="form-control">
+            <option value="">Odaberi projektnu karticu primatelja</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Transakcija.VrstaTransakcijeId"></label>
+        <select asp-for="@Model.Transakcija.VrstaTransakcijeId" asp-items="ViewBag.VrsteTransakcije" class="form-control">
+            <option value="">Odaberi vrstu transakcije</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Potvrdi promjene</button>
+    <a asp-action="Index" asp-controller="Transakcija" class="btn btn-secondary">Odustani</a>
+</form>

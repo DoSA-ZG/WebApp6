@@ -1,0 +1,190 @@
+﻿@model ProjektViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Detalji projekta</h2>
+<div style="margin-bottom: 50px;">
+    <table class="table  table-striped w-100">
+        <thead class="bg-dark text-white">
+            <tr>
+                <th>Projekt ID</th>
+                <th>Ime projekta</th>
+                <th>Kratica projekta</th>
+                <th>Opis projekta</th>
+                <th>Planirani početak</th>
+                <th>Planirani kraj</th>
+                <th>Pravi početak</th>
+                <th>Pravi kraj</th>
+                <th>Vrsta Projekta</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        <td>@Model.projekt.ProjektId</td>
+        <td>@Model.projekt.Ime</td>
+        <td>@Model.projekt.Kratica</td>
+        <td>@Model.projekt.Opis</td>
+        <td>@Model.projekt.PlaniraniPočetak.ToString("dd-MM-yyyy")</td>
+        <td>@Model.projekt.PlaniraniKraj.ToString("dd-MM-yyyy")</td>
+        <td>
+                @if (Model.projekt.StvarniPočetak is not null)
+                {
+                    @Model.projekt.StvarniPočetak.Value.ToString("dd-MM-yyyy")
+                }
+                else
+                {
+                <a>/</a>
+                }
+        </td>
+        <td>
+                @if (Model.projekt.StvarniKraj is not null)
+                {
+                    @Model.projekt.StvarniKraj.Value.ToString("dd-MM-yyyy")
+                }
+                else
+                {
+                <a>/</a>
+                }
+        </td>
+        <td>@ViewBag.VrsteProjektaList[Model.projekt.VrstaProjektaId]</td>
+
+        </tbody>
+    </table>
+</div>
+
+<div style="margin-bottom: 50px;">
+    <h3>Povezane bankovne kartice</h3>
+    @if (Model.projekt.ProjektnaKartica.Count() == 0)
+    {
+        <a>Nema povezanih bankovnih kartica</a>
+    }
+    else
+    {
+        <table class="table  table-striped w-100">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th>Banka</th>
+                    <th>Iban</th>
+                    <th>Stanje</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var kartica in Model.projekt.ProjektnaKartica)
+                {
+                    <tr>
+                        <td>@kartica.Banka</td>
+                        <td>@kartica.Iban</td>
+                        <td>@kartica.Stanje</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    }
+</div>
+
+<div style="margin-bottom: 50px;">
+    <h3>Povezani dokumenti</h3>
+    @if (Model.projekt.Dokumentacija.Count() == 0)
+    {
+        <a>Nema povezane dokumentacije</a>
+    }
+    else
+    {
+        <table class="table  table-striped w-100">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th>Naziv Dokumentacije</th>
+                    <th>Vrijeme Kreacije</th>
+                    <th>Status Dovršenosti</th>
+                    <th>Vrsta Dokumentacije</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var document in Model.projekt.Dokumentacija)
+                {
+                    <tr>
+                        <td>@document.NazivDokumentacije</td>
+                        <td>@document.VrijemeKreacije</td>
+                        <td>@document.StatusDovršenosti</td>
+                        <td>@ViewBag.vrstaDokumentacije[document.VrstaDokumentacijeId]</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    }
+</div>
+
+<div style="margin-bottom: 50px;">
+    <h3>Povezan plan projekta</h3>
+    @if (Model.projekt.PlanProjekta is null)
+    {
+        <a>Nema povezanih planova projekta</a>
+    }
+    else
+    {
+        <table class="table  table-striped w-100">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th>Id</th>
+                    <th>Planirani početak</th>
+                    <th>Planirani kraj</th>
+                    <th>Voditelj</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>@Model.projekt.PlanProjekta.PlanProjektaId</td>
+                    <td>@Model.projekt.PlanProjekta.PlaniraniPočetak</td>
+                    <td>@Model.projekt.PlanProjekta.PlaniraniKraj</td>
+                    <td>@Model.projekt.PlanProjekta.VoditeljEmail</td>
+                </tr>
+
+            </tbody>
+        </table>
+    }
+</div>
+
+<div style="margin-bottom: 50px;">
+    <h3>Povezani suradnici</h3>
+    @if (Model.projekt.SuradnikEmail.Count() == 0)
+    {
+        <a>Nema povezanih suradnika</a>
+    }
+    else
+    {
+        <table class="table  table-striped w-100">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th>Email</th>
+                    <th>Ime</th>
+                    <th>Prezime</th>
+                    <th>Broj telefona</th>
+                    <th>Email nadređenog</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var suradnik in Model.projekt.SuradnikEmail)
+                {
+                    <tr>
+                        <td>@suradnik.Email</td>
+                        <td>@suradnik.Ime</td>
+                        <td>@suradnik.Prezime</td>
+                        <td>@suradnik.BrojTelefona</td>
+                        <td>@suradnik.NadređeniEmail</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    }
+</div>
+
+<div style="margin-top: 20px;">
+    <a asp-action="STP" class="btn btn-secondary">Povratak na projekte</a>
+</div>

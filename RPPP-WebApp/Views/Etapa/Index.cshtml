@@ -1,0 +1,83 @@
+@model EtapaPageView
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Etape</h1>
+
+<div style="margin-bottom: 20px;">
+    <a class="btn btn-primary" asp-action="Create">Dodaj Etapu</a>
+</div>
+
+<div class="float-end">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            @for (int i = 1; i <= Model.PagingInfo.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.PagingInfo.CurrentPage ? "active" : "")">
+                    <a class="page-link"
+                       href="@Url.Action("Index", new { page = i, sort = Model.PagingInfo.Sort, ascending = Model.PagingInfo.Ascending })">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
+
+<table class="table table-striped" style="width:100%">
+    <thead class="bg-dark text-white">
+        <tr>
+            <th>
+                <a asp-route-sort="1" asp-route-page="@Model.PagingInfo.CurrentPage"
+                   asp-route-ascending="@(Model.PagingInfo.Sort == 1 ? !Model.PagingInfo.Ascending : true)">
+                    ID
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="2" asp-route-page="@Model.PagingInfo.CurrentPage"
+                   asp-route-ascending="@(Model.PagingInfo.Sort == 2 ? !Model.PagingInfo.Ascending : true)">
+                    Ime Etape
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="3" asp-route-page="@Model.PagingInfo.CurrentPage"
+                   asp-route-ascending="@(Model.PagingInfo.Sort == 3 ? !Model.PagingInfo.Ascending : true)">
+                    Opis
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="4" asp-route-page="@Model.PagingInfo.CurrentPage"
+                   asp-route-ascending="@(Model.PagingInfo.Sort == 4 ? !Model.PagingInfo.Ascending : true)">
+                    Plan Projekta
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="5" asp-route-page="@Model.PagingInfo.CurrentPage"
+                   asp-route-ascending="@(Model.PagingInfo.Sort == 5 ? !Model.PagingInfo.Ascending : true)">
+                    Aktivnost
+                </a>
+            </th>
+            <th> </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var etapa in Model.Etapa)
+        {
+            <tr>
+                <td>@etapa.EtapaId</td>
+                <td>@etapa.Ime</td>
+                <td>@etapa.Opis</td>
+                <td>@etapa.PlanProjektaId</td>
+                <td>@etapa.Aktivnost.Ime</td>
+                <td style="display: flex; align-items: center;">
+                    <a asp-action="Edit" asp-route-EtapaId="@etapa.EtapaId" class="btn btn-info mr-2">Uredi</a>
+                    <form asp-action="Delete" method="post" class="mx-2" asp-route-EtapaId="@etapa.EtapaId"
+                          asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-sort="@Model.PagingInfo.Sort"
+                          asp-route-ascending="@Model.PagingInfo.Ascending">
+                        <input type="hidden" name="EtapaId" value="@etapa.EtapaId" />
+                        <button type="submit" class="btn btn-danger delete" title="Obriši">Obriši</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

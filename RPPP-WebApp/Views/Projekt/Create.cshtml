@@ -1,0 +1,74 @@
+﻿@using RPPP_WebApp.ViewModels
+@model ProjektViewModel
+
+@{
+    ViewData["Title"] = "Create";
+} 
+
+<h1>Dodaj Projekt</h1>
+
+<form asp-action="Create" method="post" asp-antiforgery="true">
+
+    <div class="form-group">
+        <label asp-for="projekt.Ime"></label>
+        <input asp-for="projekt.Ime" class="form-control" />
+        <div class="form-text"><span asp-validation-for="projekt.Ime" class="text-danger"></span></div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="projekt.PlaniraniPočetak"></label>
+        <input asp-for="projekt.PlaniraniPočetak" type="date" class="form-control" value="@Model.projekt.PlaniraniPočetak.ToString("yyyy-MM-dd")" />
+        <div class="form-text"><span asp-validation-for="@Model.projekt.PlaniraniPočetak" class="text-danger"></span></div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="projekt.PlaniraniKraj"></label>
+        <input asp-for="projekt.PlaniraniKraj" type="date" class="form-control" value="@Model.projekt.PlaniraniKraj.ToString("yyyy-MM-dd")" />
+        <div class="form-text"><span asp-validation-for="@Model.projekt.PlaniraniKraj" class="text-danger"></span></div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="projekt.StvarniPočetak"></label>
+        <input asp-for="projekt.StvarniPočetak" type="date" class="form-control" value="@Model.projekt.PlaniraniPočetak.ToString("yyyy-MM-dd"))" />
+        <div class="form-text"><span asp-validation-for="@Model.projekt.StvarniPočetak" class="text-danger"></span></div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="projekt.StvarniKraj"></label>
+        <input asp-for="projekt.StvarniKraj" type="date" class="form-control" value="@Model.projekt.PlaniraniPočetak.ToString("yyyy-MM-dd"))" />
+        <div class="form-text"><span asp-validation-for="@Model.projekt.StvarniKraj" class="text-danger"></span></div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="projekt.Kratica"></label>
+        <input asp-for="projekt.Kratica" class="form-control" />
+        <div class="form-text"><span asp-validation-for="projekt.Kratica" class="text-danger"></span></div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="projekt.Opis"></label>
+        <input asp-for="projekt.Opis" class="form-control" />
+        <div class="form-text"><span asp-validation-for="projekt.Opis" class="text-danger"></span></div>
+    </div>
+
+    <div class="form-group">
+        <label>Vrsta projekta:</label>
+        @foreach (var vrstaProjekta in ViewBag.VrsteProjektaList)
+        {
+            <div class="form-check">
+                <input type="radio" id="projekt_@vrstaProjekta.Ime" name="SelectedVrstaProjekt"
+                       value="@vrstaProjekta.Ime" class="form-check-input"
+                @(Model.SelectedVrstaProjekt != null && Model.SelectedVrstaProjekt.Contains(vrstaProjekta.Ime) || ViewBag.VrsteProjektaList.IndexOf(vrstaProjekta) == 0 ? "checked" : "") />
+                <label for="projekt_@vrstaProjekta.Ime" class="form-check-label">@vrstaProjekta.Ime</label>
+            </div>
+        }
+    </div>
+
+    <button type="submit" class="btn btn-primary">Dodaj</button>
+    <a asp-action="ManageTable" asp-controller="Projekt" class="btn btn-secondary">Odustani</a>
+
+</form>
+
+@section scripts {
+    <partial name="IncludeValidation" />
+}

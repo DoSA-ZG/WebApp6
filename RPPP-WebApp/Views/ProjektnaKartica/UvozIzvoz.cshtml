@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Projekt i transakcije";
+}
+
+@section Styles {
+    <!-- Add any additional styles here -->
+    <style>
+        /* Add custom styles if needed */
+    </style>
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <h3>Excel Reports</h3>
+        <ul>
+            <li><a asp-controller="ProjektnaKarticaReport" asp-action="ProjektnaKarticaMD2">Excel - Projektne Kartice sa Transakcijama</a></li>
+            <li><a asp-controller="ProjektnaKarticaReport" asp-action="ProjektneKartice">Excel - Popis Projektnih Kartica</a></li>
+            <li><a asp-controller="ProjektnaKarticaReport" asp-action="Transakcije">Excel - Popis Transakcija</a></li>
+            <li><a asp-controller="ProjektnaKarticaReport" asp-action="ProjektneKarticePDF">PDF - Popis Projektnih Kartica</a></li>
+            <li><a asp-controller="ProjektnaKarticaReport" asp-action="TransakcijePDF">PDF - Popis Transakcija</a></li>
+        </ul>
+    </div>
+
+    <div class="col-md-6">
+        <h3>Uvezi Projektne Kartice</h3>
+        <form method="post" enctype="multipart/form-data" asp-controller="ProjektnaKarticaReport" asp-action="UveziProjektnuKarticu">
+            <div class="form-group">
+                <label for="excelFile">Odaberite Excel datoteku:</label>
+                <input type="file" class="form-control-file" id="excelFile" name="excelFile" accept=".xlsx">
+            </div>
+            <button type="submit" class="btn btn-primary">Uvezi podatke</button>
+        </form>
+
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert alert-success mt-3" role="alert">
+                @ViewBag.Message
+            </div>
+        }
+
+        <h3>Uvezi Transakcije</h3>
+        <form method="post" enctype="multipart/form-data" asp-controller="ProjektnaKarticaReport" asp-action="UveziTransakciju">
+            <div class="form-group">
+                <label for="excelFile2">Odaberite Excel datoteku:</label>
+                <input type="file" class="form-control-file" id="excelFile2" name="excelFile2" accept=".xlsx">
+            </div>
+            <button type="submit" class="btn btn-primary">Uvezi podatke</button>
+        </form>
+
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert alert-success mt-3" role="alert">
+                @ViewBag.Message
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Add any additional scripts here -->
+    <script>
+        // Add custom scripts if needed
+    </script>
+}

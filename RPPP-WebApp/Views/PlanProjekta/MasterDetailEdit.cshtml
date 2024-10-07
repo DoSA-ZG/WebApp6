@@ -1,0 +1,135 @@
+﻿@using RPPP_WebApp.ViewModels
+@model PlanProjektaViewModel
+@{
+    ViewData["Title"] = "MasterDetailEdit";
+}
+
+<h1>Uređivanje plana @Model.PlanProjekta.PlanProjektaId - 2. predaja</h1>
+
+<div class="md-container">
+    <form id="md-dokument_form" asp-action="MasterDetailEdit" asp-route-PlanProjektaId="@Model.PlanProjekta.PlanProjektaId" method="post">
+        <div class="md-form-group">
+            <button id="save" type="submit" class="btn btn-success">Spremi</button>
+            <a asp-action="Index2" asp-controller="PlanProjekta" class="btn btn-close"></a>
+        </div>
+        <div class="md-form-group">
+            <label asp-for="@Model.PlanProjekta.PlaniraniPočetak"></label>
+            <div>
+                <input asp-for="@Model.PlanProjekta.PlaniraniPočetak" class="form-control datum" />
+            </div>
+
+            <label asp-for="@Model.PlanProjekta.PlaniraniKraj"></label>
+            <div>
+                <input asp-for="@Model.PlanProjekta.PlaniraniKraj" class="form-control datum" />
+            </div>
+        </div>
+
+        <div class="md-form-group">
+            <label asp-for="@Model.PlanProjekta.StvarniPočetak"></label>
+            <div>
+                <input asp-for="@Model.PlanProjekta.StvarniPočetak" class="form-control datum" />
+            </div>
+
+            <label asp-for="@Model.PlanProjekta.StvarniKraj"></label>
+            <div>
+                <input asp-for="@Model.PlanProjekta.StvarniKraj" class="form-control datum" />
+            </div>
+        </div>
+
+        <div class="md-form-group">
+            <label asp-for="@Model.PlanProjekta.ProjektId"></label>
+            <div>
+                <input asp-for="@Model.PlanProjekta.ProjektId" readonly="readonly" class="form-control" data-autocomplete-placeholder="projekt" />
+            </div>
+
+            <label asp-for="@Model.PlanProjekta.Projekt.Kratica"></label>
+            <div>
+                <input class="form-control" data-autocomplete="projekt" asp-for="@Model.PlanProjekta.Projekt.Kratica" />
+            </div>
+
+            <label asp-for="@Model.PlanProjekta.VoditeljEmail"></label>
+            <div>
+                @{
+                    string displayName = Model.PlanProjekta.VoditeljEmail;
+                }
+
+                <input asp-for="@Model.PlanProjekta.VoditeljEmail" data-autocomplete="voditelj" class="form-control" value="@displayName" />
+            </div>
+        </div>
+
+    </form>
+    <br />
+
+    <table class="table table-striped" id="table-etape">
+        <thead>
+            <tr>
+                @{
+                    string[] nazivi = { "Etapa", "Opis", "Aktivnost", " " };
+                    for (int i = 0; i < nazivi.Length; i++)
+                    {
+                        <th class="text-center">
+                            @nazivi[i]
+                        </th>
+                    }
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var etapa in Model.Etape)
+            {
+                <tr>
+                    <form asp-action="Edit2" asp-controller="Etapa" asp-route-EtapaId="@etapa.EtapaId" asp-route-PlanProjektaId="@etapa.PlanProjektaId" method="post">
+                    <td class="text-center">
+                        <input type="hidden" name="Etape.Index" value="@etapa.EtapaId" />
+                        <input type="hidden" name="Etape[@etapa.EtapaId].EtapaId" value="@etapa.EtapaId" asp-for="@etapa.EtapaId" />
+                        <input type="text" name="Etape[@etapa.EtapaId].Ime" class="form-control" value="@etapa.Ime" asp-for="@etapa.Ime" />
+                    </td>
+                    <td class="text-center">
+                        <input name="Etape[@etapa.EtapaId].Opis" class="form-control" value="@etapa.Opis" asp-for="@etapa.Opis" />
+                    </td>
+                    <td class="text-center">
+                        <input type="hidden" name="Etape[@etapa.EtapaId].AktivnostId" class="form-control" value="@etapa.AktivnostId" asp-for="@etapa.AktivnostId" />
+                        <input name="Etape[@etapa.EtapaId].AktivnostIme" class="form-control" value="@etapa.Aktivnost.Ime" type="text" data-autocomplete="aktivnost" asp-for="@etapa.Aktivnost.Ime" />
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-success" type="submit">Spremi</button>
+                    </td>
+                    </form>
+                    <form asp-action="Delete2" asp-controller="Etapa" asp-route-EtapaId="@etapa.EtapaId" asp-route-PlanProjektaId="@etapa.PlanProjektaId" method="post">
+                    <td>
+                        <button class="btn btn-sm btn-danger" type="submit">Ukloni</button>
+                    </td>
+                    </form>
+                </tr>
+            }
+            <tr>
+                <form asp-action="Create2" asp-controller="Etapa" method="post">
+                    <input type="hidden" name="planProjektId" value="@Model.PlanProjekta.PlanProjektaId" />
+                <td>
+                    <input id="etapa-ime" type="text" name="etapaIme" class="form-control" />
+                </td>
+                <td>
+                    <input id="etapa-opis" type="text" name="etapaOpis" class="form-control" />
+                </td>
+                <td>
+                    <input id="aktivnost-id" type="hidden" name="aktivnostId" data-autocomplete-placeholder="aktivnost" />
+                    <input id="aktivnost-ime" type="text" name="aktivnostIme" class="form-control" data-autocomplete="aktivnost" />
+                </td>
+                <td colspan="3">
+                    <button class="btn btn-sm btn-primary" type="submit">Dodaj</button>
+                </td>
+                </form>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+@section styles {
+    <link rel="stylesheet" href="~/lib/jqueryui/themes/base/jquery-ui.css" />
+}
+
+@section scripts {
+    <script src="~/lib/jqueryui/jquery-ui.js"></script>
+    <script src="~/js/autocomplete.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,44 @@
+﻿@model IEnumerable<ProjektnaKartica>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Projektne Kartice</h1>
+
+<div style="margin-bottom: 20px;">
+    <a class="btn btn-primary" asp-action="Create" asp-route-viewType="Create">Dodaj Projektnu Karticu</a>
+</div>
+
+<table class="table table-striped" style="width:100%">
+    <thead class="bg-dark text-white">
+        <tr>
+            <th>Projektna Kartica ID</th>
+            <th>Banka</th>
+            <th>IBAN</th>
+            <th>Stanje</th>
+            <th>Projekt</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var projektnaKartica in Model)
+        {
+            <tr>
+                <td>@projektnaKartica.ProjektnaKarticaId</td>
+                <td>@projektnaKartica.Banka</td>
+                <td>@projektnaKartica.Iban</td>
+                <td>@projektnaKartica.Stanje</td>
+                <td>@projektnaKartica.Projekt.Ime</td>
+                <td style="display: flex; align-items: center;">
+                    <!-- Example buttons, replace with your own actions -->
+                    <a asp-action="Edit" asp-route-ProjektnaKarticaId="@projektnaKartica.ProjektnaKarticaId" asp-route-viewType="Edit"
+                       class="btn btn-info mr-2">Uredi</a>
+                    <form asp-action="Delete" method="post" class="mx-2">
+                        <input type="hidden" name="ProjektnaKarticaId" value="@projektnaKartica.ProjektId" />
+                        <button type="submit" class="btn btn-danger delete" title="Obriši">Obriši</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

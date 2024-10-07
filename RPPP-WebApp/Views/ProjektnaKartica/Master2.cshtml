@@ -1,0 +1,116 @@
+﻿@model ProjektnaKarticaPageView
+@{
+    ViewData["Title"] = "Master2";
+}
+
+<h1>Projektne Kartice</h1>
+
+<div style="margin-bottom: 20px;">
+    <a class="btn btn-primary" asp-action="Create2">Dodaj Projektnu Karticu</a>
+</div>
+
+<div class="float-end">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            @for (int i = 1; i <= Model.PagingInfo.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.PagingInfo.CurrentPage ? "active" : "")">
+                    <a class="page-link"
+                       href="@Url.Action("Master2", new { page = i, sort = Model.PagingInfo.Sort, ascending = Model.PagingInfo.Ascending })">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
+
+<table class="table table-striped" style="width:100%">
+    <thead class="bg-dark text-white">
+        <tr>
+            <th>
+                <a asp-route-sort="1" asp-route-page="@Model.PagingInfo.CurrentPage"
+                   asp-route-ascending="@(Model.PagingInfo.Sort == 1 ? !Model.PagingInfo.Ascending : true)">
+                    ID
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="2" asp-route-page="@Model.PagingInfo.CurrentPage"
+                   asp-route-ascending="@(Model.PagingInfo.Sort == 2 ? !Model.PagingInfo.Ascending : true)">
+                    Banka
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="3" asp-route-page="@Model.PagingInfo.CurrentPage"
+                   asp-route-ascending="@(Model.PagingInfo.Sort == 3 ? !Model.PagingInfo.Ascending : true)">
+                    IBAN
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="4" asp-route-page="@Model.PagingInfo.CurrentPage"
+                   asp-route-ascending="@(Model.PagingInfo.Sort == 4 ? !Model.PagingInfo.Ascending : true)">
+                    Stanje
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="5" asp-route-page="@Model.PagingInfo.CurrentPage"
+                   asp-route-ascending="@(Model.PagingInfo.Sort == 5 ? !Model.PagingInfo.Ascending : true)">
+                    Projekt
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="6" asp-route-page="@Model.PagingInfo.CurrentPage"
+                   asp-route-ascending="@(Model.PagingInfo.Sort == 6 ? !Model.PagingInfo.Ascending : true)">
+                    Izlazne transakcije
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="7" asp-route-page="@Model.PagingInfo.CurrentPage"
+                   asp-route-ascending="@(Model.PagingInfo.Sort == 7 ? !Model.PagingInfo.Ascending : true)">
+                    Ulazne transakcije
+                </a>
+            </th>
+            <th>Akcije</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var kartica in Model.ProjektneKartice)
+        {
+            <tr>
+                <td>@kartica.ProjektnaKarticaId</td>
+                <td>@kartica.Banka</td>
+                <td>@kartica.Iban</td>
+                <td>@kartica.Stanje</td>
+                <td>@kartica.Projekt?.Ime</td>
+                <td>
+                    @foreach (var transakcija in kartica.TransakcijaProjektnaKarticaIsporučitelj)
+                    {
+                        <span>Na IBAN: @transakcija.IbanPrimatelja - Iznos: @transakcija.Iznos€</span>
+                        if (transakcija != kartica.TransakcijaProjektnaKarticaIsporučitelj.Last())
+                        {
+                            <span>, </span>
+                        }
+                    }
+                </td>
+                <td>
+                    @foreach (var transakcija in kartica.TransakcijaProjektnaKarticaPrimatelj)
+                    {
+                        <span>Sa IBAN-a: @transakcija.IbanIsporučitelja - Iznos: @transakcija.Iznos€</span>
+                        if (transakcija != kartica.TransakcijaProjektnaKarticaPrimatelj.Last())
+                        {
+                            <span>, </span>
+                        }
+                    }
+                </td>
+                <td>
+                    <form asp-action="Delete2" method="post" class="mx-2">
+                    <a asp-action="Edit2" asp-route-ProjektnaKarticaId="@kartica.ProjektnaKarticaId"
+                       asp-route-page="@Model.PagingInfo.CurrentPage"
+                       asp-route-sort="@Model.PagingInfo.Sort"
+                       asp-route-ascending="@Model.PagingInfo.Ascending" class="btn btn-info mr-2">Uredi</a>
+                        <input type="hidden" name="ProjektnaKarticaId" value="@kartica.ProjektnaKarticaId" />
+                        <button type="submit" class="btn btn-danger delete" title="Obriši">Obriši</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

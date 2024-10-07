@@ -1,0 +1,76 @@
+@using RPPP_WebApp.ViewModels
+@model ZadatakViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Promijeni zadatak</h1>
+
+<form asp-action="Edit" asp-route-ZadatakId="@Model.Zadatak.ZadatakId" method="post"
+    asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-sort="@Model.PagingInfo.Sort"
+    asp-route-ascending="@Model.PagingInfo.Ascending">
+
+    <div class="form-group">
+        <label asp-for="@Model.Zadatak.OpisZadatka"></label>
+        <input asp-for="@Model.Zadatak.OpisZadatka" class="form-control" />
+        <span asp-validation-for="@Model.Zadatak.OpisZadatka" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Zadatak.PlaniraniPočetak"></label>
+        <input asp-for="@Model.Zadatak.PlaniraniPočetak" class="form-control" type="datetime-local" />
+        <span asp-validation-for="@Model.Zadatak.PlaniraniPočetak" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Zadatak.PlaniraniKraj"></label>
+        <input asp-for="@Model.Zadatak.PlaniraniKraj" class="form-control" type="datetime-local" />
+        <span asp-validation-for="@Model.Zadatak.PlaniraniKraj" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Zadatak.StvarniPočetak"></label>
+        <input asp-for="@Model.Zadatak.StvarniPočetak" class="form-control" type="datetime-local" />
+        <span asp-validation-for="@Model.Zadatak.StvarniPočetak" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Zadatak.StvarniKraj"></label>
+        <input asp-for="@Model.Zadatak.StvarniKraj" class="form-control" type="datetime-local" />
+        <span asp-validation-for="@Model.Zadatak.StvarniKraj" class="text-danger"></span>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 20px;">
+        <label asp-for="@Model.Zadatak.StatusId"></label>
+        <select asp-for="@Model.Zadatak.StatusId" asp-items="ViewBag.Statusi" class="form-control">
+            <option value="">Odaberi tip zahtjeva</option>
+        </select>
+        <span asp-validation-for="@Model.Zadatak.StatusId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 20px;">
+        <label asp-for="@Model.Zadatak.NositeljEmail"></label>
+        <select asp-for="@Model.Zadatak.NositeljEmail" asp-items="ViewBag.Suradnici" class="form-control">
+            <option value="">Odaberi tip zahtjeva</option>
+        </select>
+        <span asp-validation-for="@Model.Zadatak.NositeljEmail" class="text-danger"></span>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 20px;">
+        <label asp-for="@Model.Zadatak.ZahtjevId"></label>
+        <select asp-for="@Model.Zadatak.ZahtjevId" asp-items="ViewBag.Zahtjevi" class="form-control">
+            <option value="">Odaberi tip zahtjeva</option>
+        </select>
+        <span asp-validation-for="@Model.Zadatak.ZahtjevId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Potvrdi
+        promjene</button>
+    <a asp-action="Index" asp-controller="Zadatak" class="btn btn-secondary"
+        asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-sort="@Model.PagingInfo.Sort"
+        asp-route-ascending="@Model.PagingInfo.Ascending">Odustani</a>
+</form>
+@section scripts {
+    <partial name="IncludeValidation" />
+}

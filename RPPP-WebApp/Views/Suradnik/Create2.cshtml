@@ -1,0 +1,167 @@
+﻿@model SuradnikDetailView
+@{
+    ViewBag.Title = "Suradnik: " + @Model.Email;
+}
+
+<div class="container">
+    <form id="dokument_form" method="post" asp-action="Create2">
+
+    <br />
+    <div class="row text-center">
+            <div class="col-sm-16 text-center d-flex justify-content-between">
+                <h4>
+                    Novi Suradnik
+                </h4>
+                <div class="col-sm-2">
+                    <button type="submit" class="btn btn-primary">Dodaj</button>
+                </div>
+            </div>
+            <br />
+            <br />
+            <div class="button-group d-flex justify-content-end">
+                <a class="btn btn-sm btn-primary cancel"
+                   asp-action="Create2"
+                   asp-route-email="@Model.Email"
+                   asp-route-page="@ViewBag.Page"
+                   asp-route-sort="@ViewBag.Sort"
+                   asp-route-ascending="@ViewBag.Ascending"
+                   asp-route-position="@ViewBag.Position"
+                   title="Osvježi">
+                    Osvježi
+                </a>
+
+                <a class="btn btn-sm btn-primary cancel"
+                   asp-action="Master2"
+                   asp-route-page="@ViewBag.Page"
+                   asp-route-sort="@ViewBag.Sort"
+                   asp-route-ascending="@ViewBag.Ascending"
+                   style="margin-left: 5px;"
+                   title="Odustani">
+                    Odustani
+                </a>
+            </div>
+            <div asp-validation-summary="All" class="form-group row"></div>
+       
+    </div>
+    <hr>
+    <div class="form-group row justify-content-center">
+        <label asp-for="@Model.Email" class="col-sm-1 col-form-label"></label>
+        <div class="col-sm-2">
+            <input asp-for="@Model.Email" class="form-control" />
+        </div>
+        <label asp-for="@Model.Ime" class="col-sm-1 col-form-label"></label>
+        <div class="col-sm-1">
+            <input asp-for="@Model.Ime" class="form-control" />
+        </div>
+        <label asp-for="@Model.Prezime" class="col-sm-1 col-form-label"></label>
+        <div class="col-sm-2">
+            <input asp-for="@Model.Prezime" class="form-control" />
+        </div>
+        <label asp-for="@Model.NadredeniEmail" class="col-sm-1 col-form-label"></label>
+        <div class="col-sm-3">
+            @{
+                string displayName = $"{Model.nadredeniSuradnik?.Ime} {Model.nadredeniSuradnik?.Prezime}";
+            }
+
+            <input asp-for="@Model.nadredeniSuradnik" data-autocomplete="nadredeniSuradnik" 
+               data-autocomplete-placeholder-name="nadredenisuradnik" class="form-control" value="@displayName" />
+            <input type="hidden" asp-for="@Model.NadredeniEmail" data-autocomplete-placeholder="nadredenisuradnik" />
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="form-group row justify-content-center">
+        <label asp-for="@Model.URL" class="col-sm-1 col-form-label"></label>
+        <div class="col-sm-3">
+            <input asp-for="@Model.URL"  class="form-control" />
+        </div>
+        <label asp-for="@Model.MjestoStanovanja" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-2">
+            <input asp-for="@Model.MjestoStanovanja"  class="form-control" />
+        </div>
+        <label asp-for="@Model.BrojTelefona" class="col-sm-1 col-form-label"></label>
+        <div class="col-sm-3">
+            <input asp-for="@Model.BrojTelefona"  class="form-control" />
+        </div>
+    </div>
+    <br />
+    <div class="form-group justify-content-center">
+        <label>Uloge:</label>
+        @{
+            var ulogeList = ViewBag.UlogeList as List<Uloga>;
+        }
+        @foreach (var uloga in ulogeList)
+        {
+                <input type="hidden" name="Uloga.Index" value="@uloga.UlogaId" />
+            <div class="form-check">
+                    <input type="checkbox" id="uloga_@uloga.Ime" name="Uloga[@uloga.UlogaId].Ime"
+                       value="@uloga.Ime" class="form-check-input" 
+                @(Model.Uloga != null && Model.Uloga.Contains(uloga) ? "checked" : "") />
+                <label for="uloga_@uloga.Ime" class="form-check-label">@uloga.Ime</label>
+            </div>
+        }
+          
+    </div>
+
+    <hr>
+     <h5>Poslovi</h5>
+    <div class="row">
+            <table class="table table-striped" id="table-posao">
+            <thead>
+                <tr>
+                    @{
+                        string[] nazivi = {"Opis", "Vrijeme početka", "Vrijeme kraja", "Vrsta posla", "Zadatak" };
+                        for (int i = 0; i < nazivi.Length; i++)
+                        {
+                            <th class="text-center">
+                                @nazivi[i]
+                            </th>
+                        }
+                    }
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td>
+                            <input id="posao-opis" class="form-control" type="text" />
+                        </td>
+                        <td class="text-center col-sm-1">
+                            <input id="posao-pocetak" class="form-control" type="datetime-local" />
+                        </td>
+                        <td class="text-center col-sm-1">
+                            <input id="posao-kraj" class="form-control" type="datetime-local" />
+                        </td>
+                        <td class="text-right col-sm-2">
+                            <input type="hidden" id="posao-vrstaid" data-autocomplete-placeholder="vrstaPosla"  />
+                            <input id="posao-vrsta" data-autocomplete="vrstaPosla"
+                                   class="form-control"/>
+                        </td>
+                        <td class="text-right col-sm-2">
+                            <input type="hidden" id="posao-zadatakid" data-autocomplete-placeholder="zadatak" />
+                            <input id="posao-zadatak" data-autocomplete="zadatak"
+                                   class="form-control" />
+                        </td>
+                        <td class="text-left" colspan="3">
+                            <button id="posao-dodaj" class="btn btn-sm btn-secondary" title="Dodaj">Dodaj</button>
+                        </td> 
+                    </tr>
+            </tbody>
+        </table>
+    </div>
+    </form>
+</div>
+
+<partial name="NoviPosaoTemplate" />
+
+@section styles {
+    <link rel="stylesheet" href="~/lib/jqueryui/themes/base/jquery-ui.css" />
+}
+
+@section scripts {
+    <partial name="IncludeValidation" />
+    <script src="~/lib/jqueryui/jquery-ui.js"></script>
+    <script src="~/js/autocomplete.js" asp-append-version="true"></script>
+    <script src="~/js/posao.js" asp-append-version="true"></script>
+
+}

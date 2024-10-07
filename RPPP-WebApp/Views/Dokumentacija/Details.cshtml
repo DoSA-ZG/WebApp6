@@ -1,0 +1,36 @@
+﻿@model DokumentacijaViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Detalji Dokumentacije</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Naziv</th>
+            <th>VrijemeKreacije</th>
+            <th>Format</th>
+            <th>URL</th>
+            <th>StatusDovršenosti</th>
+            <th>Povezani projekt</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    <td>@Model.dokumentacija.DokumentacijaId</td>
+    <td>@Model.dokumentacija.NazivDokumentacije</td>
+    <td>@Model.dokumentacija.VrijemeKreacije.ToString("dd-MM-yyyy")</td>
+    <td>@Model.dokumentacija.Format</td>
+    <td>@Model.dokumentacija.URL</td>
+    <td>@Model.dokumentacija.StatusDovršenosti
+    <td>@Model.dokumentacija.Projekt.Ime</td>
+
+    </tbody>
+</table>
+
+<div style="margin-top: 20px;">
+    <a asp-action="STP" class="btn btn-secondary">Povratak na projekte</a>
+</div>

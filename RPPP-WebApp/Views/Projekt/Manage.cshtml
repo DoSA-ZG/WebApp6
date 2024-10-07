@@ -1,0 +1,292 @@
+﻿@model ProjektViewModel
+
+@{
+    ViewData["Title"] = "Manage";
+}
+
+<h2 style="margin-bottom:20px; margin-top:20px">Upravljanje projektom</h2>
+<div style="margin-bottom: 30px;">
+    <div class="btn-group">
+        <a asp-action="ManagePrev" asp-controller="Projekt" asp-route-id="@Model.projekt.ProjektId" class="btn btn-primary">Prošli Projekt</a>
+        <a asp-action="ManageNext" asp-controller="Projekt" asp-route-id="@Model.projekt.ProjektId" class="btn btn-primary">Sljedeći Projekt</a>
+    </div>
+</div>
+<div style="margin-bottom: 50px;">
+    <form asp-action="Manage" method="post" asp-antiforgery="true">
+
+        <div class="form-group">
+            <label asp-for="projekt.Ime"></label>
+            <input asp-for="projekt.Ime" class="form-control" />
+            <div class="form-text"><span asp-validation-for="projekt.Ime" class="text-danger"></span></div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="projekt.PlaniraniPočetak"></label>
+            <input asp-for="projekt.PlaniraniPočetak" type="date" class="form-control" value="@Model.projekt.PlaniraniPočetak.ToString("yyyy-MM-dd")" />
+            <div class="form-text"><span asp-validation-for="@Model.projekt.PlaniraniPočetak" class="text-danger"></span></div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="projekt.PlaniraniKraj"></label>
+            <input asp-for="projekt.PlaniraniKraj" type="date" class="form-control" value="@Model.projekt.PlaniraniKraj.ToString("yyyy-MM-dd")" />
+            <div class="form-text"><span asp-validation-for="@Model.projekt.PlaniraniKraj" class="text-danger"></span></div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="projekt.StvarniPočetak"></label>
+            <input asp-for="projekt.StvarniPočetak" type="date" class="form-control" value="@Model.projekt.PlaniraniPočetak.ToString("yyyy-MM-dd"))" />
+            <div class="form-text"><span asp-validation-for="@Model.projekt.StvarniPočetak" class="text-danger"></span></div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="projekt.StvarniKraj"></label>
+            <input asp-for="projekt.StvarniKraj" type="date" class="form-control" value="@Model.projekt.PlaniraniPočetak.ToString("yyyy-MM-dd"))" />
+            <div class="form-text"><span asp-validation-for="@Model.projekt.StvarniKraj" class="text-danger"></span></div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="projekt.Kratica"></label>
+            <input asp-for="projekt.Kratica" class="form-control" />
+            <div class="form-text"><span asp-validation-for="projekt.Kratica" class="text-danger"></span></div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="projekt.Opis"></label>
+            <input asp-for="projekt.Opis" class="form-control" />
+            <div class="form-text"><span asp-validation-for="projekt.Opis" class="text-danger"></span></div>
+        </div>
+
+        <div class="form-group">
+            <label>Vrsta projekta:</label>
+            @foreach (var vrstaProjekta in ViewBag.VrsteProjektaList)
+            {
+                <div class="form-check">
+                    <input type="radio" id="projekt_@vrstaProjekta.Ime" name="SelectedVrstaProjekt"
+                           value="@vrstaProjekta.Ime" class="form-check-input"
+                    @(Model.SelectedVrstaProjekt != null && Model.SelectedVrstaProjekt.Contains(vrstaProjekta.Ime) || ViewBag.VrsteProjektaList.IndexOf(vrstaProjekta) == 0 ? "checked" : "") />
+                    <label for="projekt_@vrstaProjekta.Ime" class="form-check-label">@vrstaProjekta.Ime</label>
+                </div>
+            }
+        </div>
+
+        <button type="submit" class="btn btn-primary">Promjeni</button>
+        <a asp-action="ManageTable" asp-controller="Projekt" class="btn btn-secondary">Odustani</a>
+
+    </form>
+</div>
+
+<div style="margin-bottom: 50px;">
+    <h3>Povezane bankovne kartice</h3>
+    @if (Model.projekt.ProjektnaKartica.Count() == 0)
+    {
+        <div style="display: flex; flex-direction: column; align-items: start; text-align: center;">
+            <a style="margin-bottom: 10px;">Nema povezanih bankovnih kartica, dodajte novu</a>
+            <a asp-action="Create" asp-controller="ProjektnaKartica" asp-route-viewType="Edit" class="btn btn-warning">Dodaj</a>
+        </div>
+
+    }
+    else
+    {
+        <table class="table  table-striped w-100">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th>Banka</th>
+                    <th>Iban</th>
+                    <th>Stanje</th>
+                    <th>Details</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var kartica in Model.projekt.ProjektnaKartica)
+                {
+                    <tr>
+                        <td>@kartica.Banka</td>
+                        <td>@kartica.Iban</td>
+                        <td>@kartica.Stanje</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@kartica.ProjektnaKarticaId" asp-controller="ProjektnaKartica"
+                               class="btn btn-success">Detalji</a>
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-ProjektnaKarticaId="@kartica.ProjektnaKarticaId" asp-controller="ProjektnaKartica" asp-route-viewType="Edit"
+                               class="btn btn-warning">Uredi</a>
+                        </td>
+                        <td>
+                            <form asp-action="Delete" asp-route-ProjektnaKarticaId="@kartica.ProjektnaKarticaId" asp-controller="ProjektnaKartica">
+                                <button type="submit" class="btn btn-danger  delete">Obriši</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+        <a asp-action="Create" asp-controller="ProjektnaKartica" asp-route-viewType="Edit" class="btn btn-primary">Dodaj</a>
+    }
+</div>
+
+<div style="margin-bottom: 50px;">
+    <h3>Povezani dokumenti</h3>
+    @if (Model.projekt.Dokumentacija.Count() == 0)
+    {
+        <div style="display: flex; flex-direction: column; align-items: start; text-align: center;">
+            <a style="margin-bottom: 10px;">Nema povezane dokumentacije, dodajte novu</a>
+            <a asp-action="Create" asp-controller="Dokumentacija" class="btn btn-warning">Dodaj</a>
+        </div>
+
+    }
+    else
+    {
+        <table class="table  table-striped w-100">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th>Naziv Dokumentacije</th>
+                    <th>Vrijeme Kreacije</th>
+                    <th>Status Dovršenosti</th>
+                    <th>Vrsta Dokumentacije</th>
+                    <th>Details</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var document in Model.projekt.Dokumentacija)
+                {
+                    <tr>
+                        <td>@document.NazivDokumentacije</td>
+                        <td>@document.VrijemeKreacije</td>
+                        <td>@document.StatusDovršenosti</td>
+                        <td>@ViewBag.vrstaDokumentacije[document.VrstaDokumentacijeId]</td>
+                        <td>
+                            <a asp-action="Details" asp-route-Id="@document.DokumentacijaId" asp-controller="Dokumentacija"
+                               class="btn btn-success">Detalji</a>
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-Id="@document.DokumentacijaId" asp-controller="Dokumentacija"
+                               class="btn btn-warning">Uredi</a>
+                        </td>
+                        <td>
+                            <form asp-action="Delete" asp-route-Id="@document.DokumentacijaId" asp-controller="Dokumentacija">
+                                <button type="submit" class="btn btn-danger  delete">Obriši</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+        <a asp-action="Create" asp-controller="Dokumentacija" class="btn btn-primary">Dodaj</a>
+    }
+</div>
+
+<div style="margin-bottom: 50px;">
+    <h3>Povezan plan projekta</h3>
+    @if (Model.projekt.PlanProjekta is null)
+    {
+        <div style="display: flex; flex-direction: column; align-items: start; text-align: center;">
+            <a style="margin-bottom: 10px;">Nema povezanih planova projekta, dodajte novi plan projekta</a>
+            <a asp-action="Create" asp-controller="PlanProjekta" class="btn btn-warning">Dodaj</a>
+        </div>
+
+    }
+    else
+    {
+        <table class="table  table-striped w-100">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th>Id</th>
+                    <th>Planirani početak</th>
+                    <th>Planirani kraj</th>
+                    <th>Voditelj</th>
+                    <th>Details</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>@Model.projekt.PlanProjekta.PlanProjektaId</td>
+                    <td>@Model.projekt.PlanProjekta.PlaniraniPočetak</td>
+                    <td>@Model.projekt.PlanProjekta.PlaniraniKraj</td>
+                    <td>@Model.projekt.PlanProjekta.VoditeljEmail</td>
+                    <td>
+                        <form asp-action="Details" asp-route-id="@Model.projekt.PlanProjekta.PlanProjektaId" asp-controller="PlanProjekta">
+                            <button type="submit" class="btn btn-success">Detalji</button>
+                        </form>
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-PlanProjektaId="@Model.projekt.PlanProjekta.PlanProjektaId" asp-controller="PlanProjekta"
+                           class="btn btn-warning">Uredi</a>
+                    </td>
+                    <td>
+                        <form asp-action="Delete" asp-route-PlanProjektID="@Model.projekt.PlanProjekta.PlanProjektaId" asp-controller="PlanProjekta">
+                            <button type="submit" class="btn btn-danger delete">Obriši</button>
+                        </form>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <a asp-action="Create" asp-controller="PlanProjekta" class="btn btn-primary">Dodaj</a>
+    }
+</div>
+
+<div style="margin-bottom: 50px;">
+    <h3>Povezani suradnici</h3>
+    @if (Model.projekt.SuradnikEmail.Count() == 0)
+    {
+        <div style="display: flex; flex-direction: column; align-items: start; text-align: center;">
+            <a style="margin-bottom: 10px;">Nema povezanih suradnika, dodajte novog suradnika</a>
+            <a asp-action="Create" asp-controller="Suradnik" class="btn btn-warning">Dodaj</a>
+        </div>
+    }
+    else
+    {
+        <table class="table  table-striped w-100">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th>Email</th>
+                    <th>Ime</th>
+                    <th>Prezime</th>
+                    <th>Broj telefona</th>
+                    <th>Email nadređenog</th>
+                    <th>Details</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var suradnik in Model.projekt.SuradnikEmail)
+                {
+                    <tr>
+                        <td>@suradnik.Email</td>
+                        <td>@suradnik.Ime</td>
+                        <td>@suradnik.Prezime</td>
+                        <td>@suradnik.BrojTelefona</td>
+                        <td>@suradnik.NadređeniEmail</td>
+                        <td>
+                            <form asp-action="Detail" asp-route-Email="@suradnik.Email" asp-controller="Suradnik">
+                                <button type="submit" class="btn btn-success">Detalji</button>
+                            </form>
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-Email="@suradnik.Email" asp-controller="Suradnik"
+                               class="btn btn-warning">Uredi</a>
+                        </td>
+                        <td>
+                            <form asp-action="Delete" asp-route-Email="@suradnik.Email" asp-controller="Suradnik">
+                                <button type="submit" class="btn btn-danger  delete">Obriši</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+        <a asp-action="Create" asp-controller="Suradnik" class="btn btn-primary">Dodaj</a>
+    }
+</div>

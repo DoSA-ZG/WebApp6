@@ -1,0 +1,48 @@
+﻿@using RPPP_WebApp.ViewModels
+@model PlanProjektaViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="create-form">
+    <h1>Dodaj Plan projekta</h1>
+
+    <form asp-action="Create" method="post" class="form-container">
+        <div class="form-element">
+            <label asp-for="@Model.PlanProjekta.PlaniraniPočetak">Planirani početak: </label>
+            <input asp-for="@Model.PlanProjekta.PlaniraniPočetak" class="form-control" />
+            <div class="form-text"></div><span asp-validation-for="@Model.PlanProjekta.PlaniraniPočetak" class="text-danger"></span>
+        </div>
+
+        <div class="form-element">
+            <label asp-for="@Model.PlanProjekta.PlaniraniKraj">Planirani kraj: </label>
+            <input asp-for="@Model.PlanProjekta.PlaniraniKraj" class="form-control" />
+            <div class="form-text"></div><span asp-validation-for="@Model.PlanProjekta.PlaniraniKraj" class="text-danger"></span>
+        </div>
+
+        <div class="form-element">
+            <label asp-for="@Model.PlanProjekta.ProjektId">Odaberi projekt kojemu plan projekta pripada: </label>
+            <select asp-for="@Model.PlanProjekta.ProjektId" asp-items="ViewBag.Projekti" class="form-control">
+                <option value=""></option>
+            </select>
+            <span asp-validation-for="@Model.PlanProjekta.ProjektId" class="text-danger"></span>
+        </div>
+
+        <div class="form-element">
+            <label asp-for="@Model.PlanProjekta.VoditeljEmail">Odaberi voditelja: </label>
+            <select asp-for="@Model.PlanProjekta.VoditeljEmail" asp-items="ViewBag.Suradnici" class="form-control">
+                <option value=""></option>
+            </select>
+            <span asp-validation-for="@Model.PlanProjekta.VoditeljEmail" class="text-danger"></span>
+        </div>
+
+        <div class="buttons">
+            <button type="submit" class="btn-add">Dodaj</button>
+            <a asp-action="Index" asp-controller="PlanProjekta" class="btn-leave">Odustani</a>
+        </div>
+
+    </form>
+</div>
+@section scripts {
+    <partial name="IncludeValidation" />
+}

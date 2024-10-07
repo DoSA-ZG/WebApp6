@@ -1,0 +1,64 @@
+﻿@using RPPP_WebApp.ViewModels
+@model PosaoViewModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Uredi Posao</h1>
+
+<form asp-action="Edit" asp-route-page="@ViewBag.Page"
+      asp-route-sort="@ViewBag.Sort"
+      asp-route-ascending="@ViewBag.Ascending" method="post">
+    <div asp-validation-summary="All"></div>
+    <div class="form-group">
+        <label asp-for="@Model.posao.Opis"></label>
+        <div><span asp-asp-validation-for="@Model.posao.Opis" class="text-danger"></span></div>
+        <input asp-for="@Model.posao.Opis" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.posao.VrijemePočetkaRada"></label>
+        <div><span asp-asp-validation-for="@Model.posao.VrijemePočetkaRada" class="text-danger"></span></div>
+        <input asp-for="@Model.posao.VrijemePočetkaRada" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.posao.VrijemeKrajaRada"></label>
+        <div><span asp-asp-validation-for="@Model.posao.VrijemeKrajaRada" class="text-danger"></span></div>
+        <input asp-for="@Model.posao.VrijemeKrajaRada" class="form-control" />
+    </div>
+
+    <!-- Add other fields as needed -->
+
+    <div class="form-group">
+        <label asp-for="@Model.posao.SuradnikEmail"></label>
+        <select asp-for="@Model.posao.SuradnikEmail" asp-items="ViewBag.Suradnici" class="form-control">
+            <option value="">Odaberite suradnika</option>
+        </select>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 20px;">
+        <label asp-for="@Model.vrstaPosla"></label>
+        <select asp-for="@Model.vrstaPosla" asp-items="ViewBag.vrstaPosla" class="form-control">
+            <option value="">Odaberite vrstu posla</option>
+        </select>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 20px;">
+        <label asp-for="@Model.zadatak"></label>
+        <select asp-for="@Model.zadatak" asp-items="ViewBag.zadatak" class="form-control">
+            <option value="">Odaberite zadatak</option>
+        </select>
+    </div>
+
+    <input type="hidden" asp-for="@Model.posao.PosaoId" />
+
+    <button type="submit" class="btn btn-primary">Spremi</button>
+    <a asp-action="Index" asp-route-page="@ViewBag.Page"
+       asp-route-sort="@ViewBag.Sort"
+       asp-route-ascending="@ViewBag.Ascending" asp-controller="Posao" class="btn btn-secondary">Odustani</a>
+
+</form>
+@section scripts {
+    <partial name="IncludeValidation" />
+}

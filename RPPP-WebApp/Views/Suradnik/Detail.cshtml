@@ -1,0 +1,42 @@
+﻿@model Suradnik
+@{
+    ViewData["Title"] = "Detail";
+}
+
+<h1>Evidencija poslova</h1>
+
+<div class="mb-3">
+    <h4>@Model.Ime @Model.Prezime</h4>
+    <a class="btn btn-primary" href="#" onclick="history.back(); return false;">Povratak</a>
+</div>
+
+<div>
+    <table class="table  table-striped" style="width:100%">
+        <tr>
+            <th>Posao Id</th>
+            <th>Opis</th>
+            <th>Vrijeme Početka Rada</th>
+            <th>Vrijeme Kraja Rada</th>
+            <th>Vrsta Posla</th>
+            <!-- Add other Posao details as needed -->
+            <th>Zadatak</th>
+            <th>Projekt</th>
+        </tr>
+        @foreach (var posao in Model.Posao)
+        {
+            <tr>
+                <td>@posao.PosaoId</td>
+                <td>@posao.Opis</td>
+                <td>@posao.VrijemePočetkaRada</td>
+                <td>@posao.VrijemeKrajaRada</td>
+                <td>@posao.VrstaPosla.Ime</td>
+                <!-- Add other Posao details as needed -->
+
+                <td>@posao.Zadatak?.OpisZadatka</td>
+                <td>@posao.Zadatak?.Zahtjev?.PlanProjekta?.Projekt?.Ime</td>
+                <!-- Add other Projekt details as needed -->
+            </tr>
+        }
+    </table>
+</div>
+

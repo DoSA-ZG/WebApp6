@@ -1,0 +1,41 @@
+@model ProjektnaKartica
+
+<h1>Projektna Kartica Details</h1>
+
+<p>Projektna Kartica ID: @Model.ProjektnaKarticaId</p>
+
+<h2>Transakcije</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Transakcija ID</th>
+            <th>IBAN Isporučitelja</th>
+            <th>IBAN Primatelja</th>
+            <th>Iznos</th>
+            <th>Vrsta Transakcije</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var transakcija in Model.TransakcijaProjektnaKarticaIsporučitelj)
+        {
+            <tr>
+                <td>@transakcija.TransakcijaId</td>
+                <td>@transakcija.IbanIsporučitelja</td>
+                <td>@transakcija.IbanPrimatelja</td>
+                <td>@transakcija.Iznos</td>
+                <td>@transakcija.VrstaTransakcije.Ime</td>
+            </tr>
+        }
+        @foreach (var transakcija in Model.TransakcijaProjektnaKarticaPrimatelj)
+        {
+            <tr>
+                <td>@transakcija.TransakcijaId</td>
+                <td>@transakcija.IbanIsporučitelja</td>
+                <td>@transakcija.IbanPrimatelja</td>
+                <td>@transakcija.Iznos</td>
+                <td>@transakcija.VrstaTransakcije.Ime</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,42 @@
+@model PlanProjekta
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Plan projekta i njegove etape</h1>
+
+<p>Plan projekta ID: @Model.PlanProjektaId</p>
+
+<h2>Etape</h2>
+
+@if (Model.Etapa.Count == 0)
+{
+    <h3>Odabrani plan projekta (@Model.PlanProjektaId) nema etapa.</h3>
+
+}
+else
+{
+    <table class="table table-bordered">
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ime</th>
+                <th>Opis</th>
+                <th>Aktivnost</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var etapa in Model.Etapa)
+            {
+                <tr>
+                    <td>@etapa.EtapaId</td>
+                    <td>@etapa.Ime</td>
+                    <td>@etapa.Opis</td>
+                    <td>@etapa.Aktivnost?.Ime</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

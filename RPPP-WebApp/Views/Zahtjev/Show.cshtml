@@ -1,0 +1,113 @@
+@model ZahtjevPageView
+@{
+    ViewData["Title"] = "Show";
+}
+
+<h1>Zahtjevi</h1>
+
+<div style="margin-bottom: 20px;">
+    <a class="btn btn-primary" asp-action="Create" asp-route-ViewType="Show"
+        asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-sort="@Model.PagingInfo.Sort"
+        asp-route-ascending="@Model.PagingInfo.Ascending">Dodaj Zahtjev</a>
+</div>
+
+<div class="float-end">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            @for (int i = 1; i <= Model.PagingInfo.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.PagingInfo.CurrentPage ? "active" : "")">
+                    <a class="page-link"
+                        href="@Url.Action("Master", new { ViewType="Show", page = i, sort = Model.PagingInfo.Sort, ascending = Model.PagingInfo.Ascending })">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
+
+<table class="table table-striped" style="width:100%">
+    <thead class="bg-dark text-white">
+        <tr>
+            <th>
+                <a asp-route-ViewType="Show" asp-route-sort="1" asp-route-page="@Model.PagingInfo.CurrentPage"
+                    asp-route-ascending="@(Model.PagingInfo.Sort == 1 ? !Model.PagingInfo.Ascending : true)">
+                    Zahtjev ID
+                </a>
+            </th>
+            <th>
+                <a asp-route-ViewType="Show" asp-route-sort="2" asp-route-page="@Model.PagingInfo.CurrentPage"
+                    asp-route-ascending="@(Model.PagingInfo.Sort == 2 ? !Model.PagingInfo.Ascending : true)">
+                    Ime
+                </a>
+            </th>
+            <th>
+                <a asp-route-ViewType="Show" asp-route-sort="3" asp-route-page="@Model.PagingInfo.CurrentPage"
+                    asp-route-ascending="@(Model.PagingInfo.Sort == 3 ? !Model.PagingInfo.Ascending : true)">
+                    Opis
+                </a>
+            </th>
+            <th>
+                <a asp-route-ViewType="Show" asp-route-sort="4" asp-route-page="@Model.PagingInfo.CurrentPage"
+                    asp-route-ascending="@(Model.PagingInfo.Sort == 4 ? !Model.PagingInfo.Ascending : true)">
+                    Projekt
+                </a>
+            </th>
+            <th>
+                <a asp-route-ViewType="Show" asp-route-sort="5" asp-route-page="@Model.PagingInfo.CurrentPage"
+                    asp-route-ascending="@(Model.PagingInfo.Sort == 5 ? !Model.PagingInfo.Ascending : true)">
+                    Prioritet
+                </a>
+            </th>
+            <th>
+                <a asp-route-ViewType="Show" asp-route-sort="6" asp-route-page="@Model.PagingInfo.CurrentPage"
+                    asp-route-ascending="@(Model.PagingInfo.Sort == 6 ? !Model.PagingInfo.Ascending : true)">
+                    Tip Zahtjeva
+                </a>
+            </th>
+            <th>
+                <a asp-route-ViewType="Show" asp-route-sort="7" asp-route-page="@Model.PagingInfo.CurrentPage"
+                    asp-route-ascending="@(Model.PagingInfo.Sort == 7 ? !Model.PagingInfo.Ascending : true)">
+                    Zadatci
+                </a>
+            </th>
+            <th>Akcije</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var zahtjev in Model.Zahtjevi)
+        {
+            <tr>
+                <td>@zahtjev.ZahtjevId</td>
+                <td>@zahtjev.Ime</td>
+                <td>@zahtjev.Opis</td>
+                <td>@zahtjev.PlanProjekta?.Projekt?.Ime</td>
+                <td>@zahtjev.Prioritet?.Ime</td>
+                <td>@zahtjev.TipZahtjeva?.Ime</td>
+                <td>
+                    @foreach (var zadatak in zahtjev.Zadatak)
+                    {
+                        <span>@zadatak.OpisZadatka</span>
+                        if (zadatak != zahtjev.Zadatak.Last())
+                        {
+                            <span>, </span>
+                        }
+                    }
+                </td>
+                <td>
+                    <div style="display: flex; align-items: center;">
+                        <a asp-action="ShowEdit" asp-route-ZahtjevId="@zahtjev.ZahtjevId"
+                            asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-sort="@Model.PagingInfo.Sort"
+                            asp-route-ascending="@Model.PagingInfo.Ascending" class="btn btn-info mr-2">Edit</a>
+                        <form asp-action="Delete" method="post" class="mx-2" asp-route-page="@Model.PagingInfo.CurrentPage"
+                            asp-route-sort="@Model.PagingInfo.Sort" asp-route-ascending="@Model.PagingInfo.Ascending">
+
+                            <input type="hidden" name="ZahtjevId" value="@zahtjev.ZahtjevId" />
+                            <input type="hidden" name="ViewType" value="Master" />
+                            <button type="submit" class="btn btn-danger delete" title="Obriši">Obriši</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,122 @@
+﻿@model SuradnikViewModel2
+@{
+    ViewData["Title"] = "Master2";
+}
+
+<h1>Master-Detail</h1>
+
+<div style="margin-bottom: 20px;">
+    <a class="btn btn-primary" asp-action="Create2">Dodaj Suradnika</a>
+</div>
+
+<div class="float-end">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            @for (int i = 1; i <= Model.PagingInfo.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.PagingInfo.CurrentPage ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Master2", new { page = i, sort = Model.PagingInfo.Sort, ascending = Model.PagingInfo.Ascending })">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
+
+<table class="table  table-striped" style="width:100%">
+    <thead class="bg-dark text-white">
+        <tr>
+            <th>
+                <a asp-route-sort="1" asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-ascending="@(Model.PagingInfo.Sort == 1 ? !Model.PagingInfo.Ascending : true)">
+                    Email
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="2" asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-ascending="@(Model.PagingInfo.Sort == 2 ? !Model.PagingInfo.Ascending : true)">
+                    Ime
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="3" asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-ascending="@(Model.PagingInfo.Sort == 3 ? !Model.PagingInfo.Ascending : true)">
+                    Prezime
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="6" asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-ascending="@(Model.PagingInfo.Sort == 6 ? !Model.PagingInfo.Ascending : true)">
+                    Uloga
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="4" asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-ascending="@(Model.PagingInfo.Sort == 4 ? !Model.PagingInfo.Ascending : true)">
+                    Mjesto Stanovanja
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="5" asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-ascending="@(Model.PagingInfo.Sort == 5 ? !Model.PagingInfo.Ascending : true)">
+                    Nadređeni suradnik
+                </a>
+            </th>
+            <th>
+                <a asp-route-sort="9" asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-ascending="@(Model.PagingInfo.Sort == 9 ? !Model.PagingInfo.Ascending : true)">
+                    Poslovi
+                </a>
+            </th>
+            <th></th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var suradnik in Model.Suradnik)
+        {
+            <tr>
+                <td> 
+                <a asp-action="Show"
+                asp-route-email="@suradnik.suradnik.Email"
+                asp-route-page="@Model.PagingInfo.CurrentPage"
+                asp-route-sort="@Model.PagingInfo.Sort"
+                asp-route-ascending="@Model.PagingInfo.Ascending"
+                asp-route-position="@suradnik.Position"> @suradnik.suradnik.Email </a>
+                </td>
+                <td>@suradnik.suradnik.Ime</td>
+                <td>@suradnik.suradnik.Prezime</td>
+                <td>
+                    @foreach (var uloga in suradnik.suradnik.Uloga)
+                    {
+                        <span>@uloga.Ime</span>
+                        if (uloga != suradnik.suradnik.Uloga.Last())
+                        {
+                            <span>,</span>
+                        }
+                    }
+                </td>
+                <td>@suradnik.suradnik.MjestoStanovanja</td>
+                <td>@suradnik.suradnik.NadređeniEmail</td>
+                <td>
+                    @foreach (var posao in suradnik.suradnik.Posao)
+                    {
+                        <span>@posao.Opis</span> <!-- Replace with the actual property representing the job description -->
+                        if (posao != suradnik.suradnik.Posao.Last())
+                        {
+                            <span>,</span>
+                        }
+                    }
+                </td>
+                <td style="display: flex; align-items: center;">
+                    <a asp-action="Edit2" asp-route-email="@suradnik.suradnik.Email"
+                       asp-route-page="@Model.PagingInfo.CurrentPage"
+                       asp-route-sort="@Model.PagingInfo.Sort"
+                       asp-route-ascending="@Model.PagingInfo.Ascending"
+                       asp-route-position="@suradnik.Position"  class="btn btn-info mr-2">Uredi</a>
+               
+                <form asp-action="Delete2" method="post" class="mx-2" asp-route-page="@Model.PagingInfo.CurrentPage"
+                      asp-route-sort="@Model.PagingInfo.Sort"
+                      asp-route-ascending="@Model.PagingInfo.Ascending">
+
+                        <input type="hidden" name="Email" value="@suradnik.suradnik.Email" />
+                    <button type="submit" class="btn  btn-danger delete" title="Obriši">Obriši</button>
+                </form>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

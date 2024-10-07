@@ -1,0 +1,38 @@
+@model ZahtjevViewModel
+
+<h1>Zahtjev Details</h1>
+
+<p>Zahtjev ID: @Model.Zahtjev.ZahtjevId</p>
+
+<h2>Zadaci</h2>
+
+<form asp-action="Master" method="post" asp-route-ViewType="Master" asp-route-page="@Model.PagingInfo.CurrentPage"
+    asp-route-sort="@Model.PagingInfo.Sort" asp-route-ascending="@Model.PagingInfo.Ascending">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Zadatak ID</th>
+                <th>Opis Zadatka</th>
+                <th>Status Zadatka</th>
+                <th>Planirani Početak - Kraj</th>
+                <th>Stvarni Početak - Kraj</th>
+                <th>Zastavica Aktivnosti</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var zadatak in Model.Zahtjev.Zadatak)
+            {
+                <tr>
+                    <td>@zadatak.ZadatakId</td>
+                    <td>@zadatak.OpisZadatka</td>
+                    <td>@zadatak.Status.Ime</td>
+                    <td>@zadatak.PlaniraniPočetak - @zadatak.PlaniraniKraj</td>
+                    <td>@zadatak.StvarniPočetak - @zadatak.StvarniKraj</td>
+                    <td>@zadatak.Status.ZastavicaAktivnosti</td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+    <button type="submit" style="margin-top: 10px;" class="btn btn-danger">Povratak</button>
+</form>

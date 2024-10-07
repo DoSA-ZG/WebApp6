@@ -1,0 +1,69 @@
+@using RPPP_WebApp.ViewModels
+@model ZahtjevViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Dodaj Zahtjev</h1>
+
+<form asp-action="Create" asp-route-ViewType="@ViewBag.ViewType" method="post" asp-route-page="@Model.PagingInfo.CurrentPage"
+        asp-route-sort="@Model.PagingInfo.Sort" asp-route-ascending="@Model.PagingInfo.Ascending">
+
+    <div class="form-group">
+        <label asp-for="@Model.Zahtjev.Ime"></label>
+        <input asp-for="@Model.Zahtjev.Ime" class="form-control" />
+        <div class="form-text"></div><span asp-validation-for="@Model.Zahtjev.Ime" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Zahtjev.Opis"></label>
+        <textarea asp-for="@Model.Zahtjev.Opis" class="form-control"></textarea>
+        <div class="form-text"></div><span asp-validation-for="@Model.Zahtjev.Opis" class="text-danger"></span>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 20px;">
+        <label asp-for="@Model.Zahtjev.PlanProjektaId"></label>
+        <select asp-for="@Model.Zahtjev.PlanProjektaId" asp-items="ViewBag.PlanProjekta" class="form-control">
+            <option value="">Odaberi projekt kojemu zahtjev pripada</option>
+        </select>
+        <span asp-validation-for="@Model.Zahtjev.PlanProjektaId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 20px;">
+        <label asp-for="@Model.Zahtjev.PrioritetId"></label>
+        <select asp-for="@Model.Zahtjev.PrioritetId" asp-items="ViewBag.Prioritet" class="form-control">
+            <option value="">Odaberi prioritet Zahtjeva</option>
+        </select>
+        <span asp-validation-for="@Model.Zahtjev.PrioritetId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 20px;">
+        <label asp-for="@Model.Zahtjev.TipZahtjevaId"></label>
+        <select asp-for="@Model.Zahtjev.TipZahtjevaId" asp-items="ViewBag.TipZahtjeva" class="form-control">
+            <option value="">Odaberi tip zahtjeva</option>
+        </select>
+        <span asp-validation-for="@Model.Zahtjev.TipZahtjevaId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Dodaj</button>
+    @if (ViewBag.ViewType == "Index")
+    {
+        <a asp-action="Index" asp-controller="Zahtjev" class="btn btn-secondary"
+            asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-sort="@Model.PagingInfo.Sort"
+            asp-route-ascending="@Model.PagingInfo.Ascending">
+            Odustani
+        </a>
+    }
+    else
+    {
+        <a asp-action="Master" asp-controller="Zahtjev" class="btn btn-secondary" asp-route-ViewType="Show"
+            asp-route-page="@Model.PagingInfo.CurrentPage" asp-route-sort="@Model.PagingInfo.Sort"
+            asp-route-ascending="@Model.PagingInfo.Ascending">
+            Odustani
+        </a>
+    }
+</form>
+@section scripts {
+    <partial name="IncludeValidation" />
+}
